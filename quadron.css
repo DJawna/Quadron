@@ -1,0 +1,113 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    color: blueviolet;
+}
+
+#GameContainer {
+    width: 30%;
+    min-width: 500px;
+    animation: gCFade 1s;
+}
+
+@keyframes gCFade {
+    from { opacity: 0; width:33% }
+    to {opacity: 1; width:30%}
+}
+
+.MiddleElement {
+    position: relative;
+    margin: auto;
+}
+
+#theCanvas {
+    position:relative;
+    width: 300px;
+    margin: auto;
+
+    background-color: Black;
+    border-style: solid;
+    border-color: blueviolet;
+    border-width: 5px;
+
+
+}
+
+
+#ControlElments {
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    margin: auto;
+    left: 440px;
+
+/*    top: 10%;*/
+
+
+}
+
+#IndicatorElements {
+    display: inline-block;
+    position: relative;
+    left: 100px;
+
+}
+
+.textIndicator {
+    display: inline-block;
+    width: 50px;
+
+}
+
+#PreviewContainer {
+    position: relative;
+    left: 95px;
+
+
+}
+
+.preview {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: -25px;
+    border-style: solid;
+    border-color: blueviolet;
+    border-width: 5px;
+
+}
+
+#firstPreview {
+    width: 80px;
+    height: 80px;
+    border-style: solid;
+    border-color: blueviolet;
+    border-width: 5px;
+}
+
+
+.menuItem {
+    border-style: solid;
+    border-color: Black;
+    border-width: 2px;
+}
+
+.menuItem:hover {
+    background-color: Black;
+    color: White;
+}
+
+#GameOverScreen {
+    min-width: 400px;
+    color: crimson;
+    animation: goFadeIn 3s;
+    width: 35%;
+}
+
+@keyframes goFadeIn {
+    from { opacity: 0; width:30%}
+    to {opacity: 1; width: 35%}
+}
+

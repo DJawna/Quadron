@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Quadron v 0.2 alpha</title>
+    <link rel="stylesheet" type="text/css" href="quadron.css">
+</head>
+<body>
+<h1>Quadron</h1>
+<div id="GameContainer" class="MiddleElement">
+    <div id="IndicatorElements">
+        <div>
+            <span>Score: <span id="scoreindicator" class="textIndicator"></span></span>
+            <span>Niveau: <span id="levelindicator" class="textIndicator"></span> </span>
+            <span>Lines: <span id="LinesIndicator" class="textIndicator"></span></span>
+        </div>
+
+        <div id="PreviewContainer">
+            <canvas id="firstPreview" id="fpreview"></canvas>
+            <span>
+            <canvas id="secondPreview" class="preview"></canvas>
+            <canvas id="thirdPreview" class="preview"></canvas>
+        </span>
+
+        </div>
+
+
+
+    </div>
+    <div>
+        <div id ="ControlElments">
+            <div id="startNewGameButton" class="menuItem">start new game</div>
+        </div>
+        <canvas id="theCanvas"></canvas>
+    </div>
+
+
+</div>
+<div id="GameOverScreen" class="MiddleElement">
+    <h2>YOU DIED</h2>
+    <div>Score: <span id="endScoreIndicator"></span></div>
+    <div>Lines: <span id="endLinesIndicator"></span></div>
+    <div id="restartGameButton" class="menuItem">start new Game</div>
+
+</div>
+
+<!--  Todo: implement the keyrebinding in the future
+<div id="KeyBindingScreen" class="MiddleElement">
+    <div>land Button: <button id="FastLandMapping"></button></div>
+    <div>rotate Button: <button id="RotationMapping"></button></div>
+    <div>move right Button: <button id="RightMoveMapping"></button></div>
+    <div>move left Button: <button id="LeftMoveMapping"></button></div>
+    <div>move down Button: <button id="DownMoveMapping"></button></div>
+</div>
+-->
+
+
+<img src="assets/quadronTextures.png" id="quadTextures">
+<script src="draw.js"></script>
+<script src="quadron.js"></script>
+<script src="main.js"></script>
+
+<script>
+    (function(){
+        setup(this);
+    })();
+
+</script>
+
+</body>
+</html>
