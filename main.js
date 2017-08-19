@@ -62,20 +62,29 @@ let Key_mappings = {
   rotateButton : 38,
   moveRightButton : 39,
   moveDownbutton : 40,
-  pauseButton : 27,
-  enter : 13
+  enter : 13,
+    pauseKey : 27
 };
 
 
 function keyHandler(e) {
-	if(GAME_STATE.started === currentGameState){
-        processGameCommand(e.keyCode);		
-	}
+
+    switch (currentGameState){
+        case GAME_STATE.started:
+            inGameKeyInputHandler(e.keyCode);
+            break;
+
+        case GAME_STATE.paused:
+            pauseScreenKeyInputHandler(e.keyCode);
+            break;
+    }
+
 
 }
 
-function processGameCommand(currentCommand){
-	        switch(currentCommand){
+
+function inGameKeyInputHandler(keyCode){
+	        switch(keyCode){
             case Key_mappings.fastLandButton:
                 while(moveDown());
                 return;
@@ -100,9 +109,22 @@ function processGameCommand(currentCommand){
             case Key_mappings.moveDownbutton:
                 moveDown();
             break;
+
+                case Key_mappings.pauseKey:
+                    currentGameState = GAME_STATE.paused;
+                    break;
         }
         quadron.updateShadow(currentQuad,currentPlayField);
 
+}
+
+function pauseScreenKeyInputHandler(keyCode){
+    switch (keyCode) {
+        case  Key_mappings.pauseKey:
+            currentGameState = GAME_STATE.started;
+            break;
+
+    }
 }
 
 
@@ -228,10 +250,8 @@ function calculateEliminationState(timeStamp) {
                 currentPlayField.Cells[rowIndex][column] = cell;
             }
         }
-        
-        let deltaMS = timeStamp - lastRenderTimeStamp;
-        
-        remainingRowsLifeTime -= deltaMS;
+
+        remainingRowsLifeTime -= (timeStamp - lastRenderTimeStamp);
     }
     
     // remove the complete rows:
