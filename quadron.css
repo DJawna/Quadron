@@ -10,6 +10,8 @@ h1 {
     width: 40%;
     min-width: 560px;
     animation: gCFade 1s;
+    position: relative;
+    top: 20px;
 }
 
 #pauseLabel {
@@ -47,13 +49,7 @@ h1 {
     position:relative;
     width: 360px;
     margin: auto;
-
     background-color: Black;
-    border-style: solid;
-    border-color: blueviolet;
-    border-width: 5px;
-
-
 }
 
 
@@ -63,17 +59,22 @@ h1 {
     width: 100px;
     margin: auto;
     left: 500px;
-
-/*    top: 10%;*/
-
-
 }
 
 #IndicatorElements {
     display: inline-block;
     position: relative;
-    left: 100px;
+    background: black;
+    color: white;
+    width: 360px;
+    left: 104px;
 
+}
+
+#IndicatorHeader {
+    position: relative;
+    left: 38px;
+    top: 5px;
 }
 
 .textIndicator {
@@ -84,7 +85,8 @@ h1 {
 
 #PreviewContainer {
     position: relative;
-    left: 95px;
+    left: 140px;
+    top: 20px;
 
 
 }
@@ -94,18 +96,22 @@ h1 {
     height: 50px;
     position: relative;
     top: -25px;
+    /*
     border-style: solid;
-    border-color: blueviolet;
-    border-width: 5px;
+    border-width: 2px;
+    border-color: white;
+    */
 
 }
 
 #firstPreview {
     width: 80px;
     height: 80px;
+    /*
     border-style: solid;
-    border-color: blueviolet;
-    border-width: 5px;
+    border-width: 2px;
+    border-color: white;
+    */
 }
 
 
