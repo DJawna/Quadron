@@ -7,14 +7,14 @@ h1 {
 }
 
 #GameContainer {
-    width: 30%;
-    min-width: 500px;
+    width: 40%;
+    min-width: 560px;
     animation: gCFade 1s;
 }
 
 @keyframes gCFade {
     from { opacity: 0; width:33% }
-    to {opacity: 1; width:30%}
+    to {opacity: 1; width:40%}
 }
 
 .MiddleElement {
@@ -24,7 +24,7 @@ h1 {
 
 #theCanvas {
     position:relative;
-    width: 300px;
+    width: 360px;
     margin: auto;
 
     background-color: Black;
@@ -41,7 +41,7 @@ h1 {
     position: relative;
     width: 100px;
     margin: auto;
-    left: 440px;
+    left: 500px;
 
 /*    top: 10%;*/
 
