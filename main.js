@@ -38,6 +38,7 @@ let secondPreviewCtxt = null;
 let thirdPreviewCtxt =null;
 let quadTextures = null;
 let TextureDictionary = null;
+let pauseLabel = null;
 
 
 
@@ -112,6 +113,7 @@ function inGameKeyInputHandler(keyCode){
 
                 case Key_mappings.pauseKey:
                     currentGameState = GAME_STATE.paused;
+                    pauseLabel.style.display ="";
                     break;
         }
         quadron.updateShadow(currentQuad,currentPlayField);
@@ -122,6 +124,7 @@ function pauseScreenKeyInputHandler(keyCode){
     switch (keyCode) {
         case  Key_mappings.pauseKey:
             currentGameState = GAME_STATE.started;
+            pauseLabel.style.display ="none";
             break;
 
     }
@@ -292,7 +295,8 @@ function replenishQuad(){
 
 function setup(windowHandle) {
 
-
+    pauseLabel = windowHandle.document.getElementById("pauseLabel");
+    pauseLabel.style.display ="none";
 
     toggleGameOverScren(windowHandle,false);
     
