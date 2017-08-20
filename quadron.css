@@ -59,6 +59,7 @@ h1 {
     width: 360px;
     margin: auto;
     background-color: Black;
+    top: -60px;
 }
 
 
@@ -77,6 +78,7 @@ h1 {
     color: white;
     width: 360px;
     left: 104px;
+    z-index: 1;
 
 }
 
