@@ -112,20 +112,29 @@ function inGameKeyInputHandler(keyCode){
                 moveDown();
             break;
 
-                case Key_mappings.pauseKey:
-                    currentGameState = GAME_STATE.paused;
-                    pauseLabel.style.display ="";
-                    break;
+            case Key_mappings.pauseKey:
+                pauseGame();
+                break;
         }
         quadron.updateShadow(currentQuad,currentPlayField);
 
 }
 
+function pauseGame() {
+    currentGameState = GAME_STATE.paused;
+    pauseLabel.style.display ="";
+
+}
+
+function unPauseGame() {
+    currentGameState = GAME_STATE.started;
+    pauseLabel.style.display ="none";
+}
+
 function pauseScreenKeyInputHandler(keyCode){
     switch (keyCode) {
         case  Key_mappings.pauseKey:
-            currentGameState = GAME_STATE.started;
-            pauseLabel.style.display ="none";
+            unPauseGame();
             break;
 
     }
@@ -218,6 +227,7 @@ function calculateGameState(timeStamp){
         if( quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
             currentGameState = GAME_STATE.gameOver;
             PauseButton.style.display ="none";
+            pauseLabel.style.display ="none";
             toggleGameScren(currentWindow,false);
             toggleGameOverScren(currentWindow,true);
 
@@ -306,6 +316,17 @@ function setup(windowHandle) {
     toggleGameOverScren(windowHandle,false);
     
     setupStartButtonCallback(windowHandle);
+
+    pauseButton.onclick = function () {
+        switch (currentGameState){
+            case GAME_STATE.started:
+                pauseGame();
+                break;
+
+            case GAME_STATE.paused:
+                unPauseGame();
+        }
+    };
     
     levelIndicator = windowHandle.document.getElementById("levelindicator");
     scoreIndicator = windowHandle.document.getElementById("scoreindicator");
@@ -402,6 +423,7 @@ function startNewGame() {
     resetGame();
     currentGameState = GAME_STATE.started;
     PauseButton.style.display ="";
+    pauseLabel.style.display ="none";
 
 
 

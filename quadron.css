@@ -7,7 +7,7 @@ h1 {
 }
 
 #GameContainer {
-    width: 40%;
+    width: 50%;
     min-width: 560px;
     animation: gCFade 1s;
     position: relative;
@@ -21,9 +21,16 @@ h1 {
 }
 #footer {
     position: absolute;
-    bottom: 10px;
-    width: 50%;
+    bottom: 0;
+    width: 100%;
     text-align: center;
+    background: black;
+    color: white;
+    font-size:0.8em;
+    margin:0;
+    padding:0;
+    z-index: 6;
+    height: 30px;
 }
 
 #overlay {
@@ -65,7 +72,7 @@ h1 {
 
 @keyframes gCFade {
     from { opacity: 0; width:33% }
-    to {opacity: 1; width:40%}
+    to {opacity: 1; width:50%}
 }
 
 .MiddleElement {
@@ -88,6 +95,7 @@ h1 {
     width: 100px;
     margin: auto;
     left: 500px;
+    top: -200px;
 }
 
 #IndicatorElements {
