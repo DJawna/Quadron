@@ -33,6 +33,15 @@ h1 {
     height: 30px;
 }
 
+a {
+    font-weight: bold;
+    color: cadetblue;
+
+}
+a:visited {
+    color: cadetblue;
+}
+
 #overlay {
     position: absolute;
     z-index: 1;
