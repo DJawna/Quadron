@@ -22,8 +22,10 @@
         </div>
     </div>
     <div>
+
         <div id ="ControlElments">
-            <div id="startNewGameButton" class="menuItem">start new game</div>
+            <div id="PauseButton" title="pause game"></div>
+            <div  id="startNewGameButton" class="ReStartStyle" title="start new game"></div>
         </div>
         <img src="assets/Frame.png" id="overlay">
         <canvas id="theCanvas"></canvas>
@@ -36,22 +38,18 @@
     <h2>YOU DIED</h2>
     <div>Score: <span id="endScoreIndicator"></span></div>
     <div>Lines: <span id="endLinesIndicator"></span></div>
-    <div id="restartGameButton" class="menuItem">start new Game</div>
+    <div id="restartGameButton" class="ReStartStyle" title="start new Game"></div>
 
 </div>
 
-<!--  Todo: implement the keyrebinding in the future
-<div id="KeyBindingScreen" class="MiddleElement">
-    <div>land Button: <button id="FastLandMapping"></button></div>
-    <div>rotate Button: <button id="RotationMapping"></button></div>
-    <div>move right Button: <button id="RightMoveMapping"></button></div>
-    <div>move left Button: <button id="LeftMoveMapping"></button></div>
-    <div>move down Button: <button id="DownMoveMapping"></button></div>
+<div id="gotoGithub">
+
+    <a href="https://github.com/DJawna/Quadron" title="Visit the Repo!"><img src="assets/GitHub-Mark-64px.png" ></a>
 </div>
--->
 
 
 <img src="assets/quadronTextures.png" id="quadTextures" hidden>
+<div id="footer">The Restart Icon has been provided under the Creative Commons license by <a href="http://www.danieledesantis.net/">Daniele De Santis</a> </div>
 <script src="draw.js"></script>
 <script src="quadron.js"></script>
 <script src="main.js"></script>

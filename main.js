@@ -39,6 +39,7 @@ let thirdPreviewCtxt =null;
 let quadTextures = null;
 let TextureDictionary = null;
 let pauseLabel = null;
+let pauseButton = null;
 
 
 
@@ -216,7 +217,7 @@ function calculateGameState(timeStamp){
         replenishQuad();
         if( quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
             currentGameState = GAME_STATE.gameOver;
-
+            PauseButton.style.display ="none";
             toggleGameScren(currentWindow,false);
             toggleGameOverScren(currentWindow,true);
 
@@ -282,6 +283,7 @@ function resetGame(){
     currentScore =0;
 
     rowsEliminatedSoFar =0;
+
     
 }
 
@@ -297,6 +299,9 @@ function setup(windowHandle) {
 
     pauseLabel = windowHandle.document.getElementById("pauseLabel");
     pauseLabel.style.display ="none";
+
+    pauseButton = windowHandle.document.getElementById("PauseButton");
+    pauseButton.style.display = "none";
 
     toggleGameOverScren(windowHandle,false);
     
@@ -396,6 +401,7 @@ function startNewGame() {
     // reset the playfield:
     resetGame();
     currentGameState = GAME_STATE.started;
+    PauseButton.style.display ="";
 
 
 

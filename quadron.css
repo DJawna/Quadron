@@ -14,6 +14,18 @@ h1 {
     top: 20px;
 }
 
+#gotoGithub {
+    position: absolute;
+    top: 10px;
+    right:50px;
+}
+#footer {
+    position: absolute;
+    bottom: 10px;
+    width: 50%;
+    text-align: center;
+}
+
 #overlay {
     position: absolute;
     z-index: 1;
@@ -34,6 +46,13 @@ h1 {
 
     text-align: center;
 
+
+}
+
+.menuItem:hover {
+    border: solid;
+    border-color: black;
+    border-width: 2px;
 
 }
 
@@ -126,16 +145,30 @@ h1 {
 }
 
 
-.menuItem {
-    border-style: solid;
-    border-color: Black;
-    border-width: 2px;
+
+.ReStartStyle {
+    background-image: url(assets/restartButton.svg);
+    height: 64px;
+    background-repeat: no-repeat;
+
 }
 
-.menuItem:hover {
-    background-color: Black;
-    color: White;
+.ReStartStyle:hover {
+    background-image: url(assets/playButton.svg);
+
 }
+
+#PauseButton {
+    background-image: url(assets/pauseButton.svg);
+    height: 64px;
+    background-repeat: no-repeat;
+
+}
+#PauseButton:hover {
+    background-image: url(assets/playButton.svg);
+}
+
+
 
 #GameOverScreen {
     min-width: 400px;
