@@ -1,5 +1,5 @@
 /*jslint es6 */
-
+/*PULLREQUEST TROLL*/
 "use strict";
 
 let currentWindow = null;
