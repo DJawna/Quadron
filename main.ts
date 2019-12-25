@@ -1,178 +1,169 @@
-/*jslint es6 */
-/*PULLREQUEST TROLL*/
-"use strict";
+import  * as quadron from "./quadron.js";
+import * as draw from "./draw.js";
 
-let currentWindow = null;
+let currentWindow: any = null;
 
-
-let currentQuad = null;
-let currentPlayField = null;
-let currentctxt = null;
-const cellSize = 30;
-const cellOffset = 0;
-const previewLenght =4;
-const previewCellsize = 24;
-const previewCellOffset =1;
-let lastRenderTimeStamp =0;
+let currentPlayField: quadron.PlayField = new quadron.PlayField();
+let currentctxt: any = null;
+const cellSize: number = 30;
+const cellOffset: number = 0;
+const previewLenght: number =4;
+const previewCellsize: number = 24;
+const previewCellOffset: number =1;
+let lastRenderTimeStamp: number =0;
 let fpsIndicator = null;
-let nextQuads =[];
 
-const fallingIntervall = 500;
-let fallingTimer =0;
-let rowsToBeEliminated =[];
-const vanishingRowsLifeTime =4000;
-let remainingRowsLifeTime =0;
-let currentLevel =0;
-let currentScore =0;
-let rowsEliminatedSoFar =0;
+const fallingIntervall: number = 500;
+let rowsToBeEliminated: number[] =[];
+const vanishingRowsLifeTime: number =4000;
+let remainingRowsLifeTime: number =0;
+let currentLevel: number =0;
+let currentScore: number =0;
+let rowsEliminatedSoFar: number =0;
 
-let scoreIndicator =null;
-let levelIndicator =null;
-let lineIndicator = null;
+let scoreIndicator: any =null;
+let levelIndicator: any =null;
+let lineIndicator: any = null;
 let firstPreviewCanvas = null;
 let secondPreviewCanvas = null;
 let thirdPreviewCanvas =null;
 
-let firstPreviewCtxt = null;
-let secondPreviewCtxt = null;
-let thirdPreviewCtxt =null;
+let firstPreviewCtxt: any = null;
+let secondPreviewCtxt: any = null;
+let thirdPreviewCtxt: any =null;
 let quadTextures = null;
-let TextureDictionary = null;
-let pauseLabel = null;
-let pauseButton = null;
+let TextureDictionary: any = null;
+let pauseLabel: any = null;
+let PauseButton: any = null;
 
 
 
+enum GAME_STATE{
+    started=1,
+    paused,
+    notStarted,
+    gameOver,
+    elimination,
+    landing
+}
 
+let currentGameState: GAME_STATE = GAME_STATE.notStarted;
 
-const GAME_STATE = {
-	started : 1,
-	paused : 2,
-	notStarted : 3,
-    gameOver :4,
-    elimination: 5,
-    landing : 6
+let gameStarted: boolean = false;
+
+enum Key_mappings {
+  fastLandButton = 32,
+  moveLeftButton = 37,
+  rotateButton = 38,
+  moveRightButton = 39,
+  moveDownbutton = 40,
+  enter = 13,
+  pauseKey = 27
 };
 
-let currentGameState = GAME_STATE.notStarted;
 
-let gameStarted = false;
-
-let Key_mappings = {
-  fastLandButton : 32,
-  moveLeftButton : 37,
-  rotateButton : 38,
-  moveRightButton : 39,
-  moveDownbutton : 40,
-  enter : 13,
-    pauseKey : 27
-};
-
-
-function keyHandler(e) {
-
+const keyHandler = function(e: any): void {
     switch (currentGameState){
         case GAME_STATE.started:
-            inGameKeyInputHandler(e.keyCode);
+            inGameKeyInputHandler(e.keyCode,currentPlayField);
             break;
 
         case GAME_STATE.paused:
             pauseScreenKeyInputHandler(e.keyCode);
             break;
     }
-
-
 }
 
 
-function inGameKeyInputHandler(keyCode){
-	        switch(keyCode){
-            case Key_mappings.fastLandButton:
-                while(moveDown());
-                return;
-            break;
+const inGameKeyInputHandler = function(keyCode: Key_mappings, playField: quadron.PlayField): void{
+    switch(keyCode){
+    case Key_mappings.fastLandButton:
+        while(moveDown());
+        return;
+
+    case Key_mappings.rotateButton:
+        
+            playField.CurrentQuad.rotateQuad(false);
             
-            case Key_mappings.rotateButton:
-                quadron.rotateQuad(false, currentQuad);
-                if(quadron.checkQuadOverlaps(currentPlayField, currentQuad)) {
-                    quadron.rotateQuad(true, currentQuad);
+                if(quadron.checkQuadOverlaps(playField)) {
+                    playField.CurrentQuad.rotateQuad(true);
                 }
-            break;
-            
-            
-            case Key_mappings.moveLeftButton:
-                moveLeft();
-            break;
-                
-            case Key_mappings.moveRightButton:
-                moveRight();
-            break;
-            
-            case Key_mappings.moveDownbutton:
-                moveDown();
-            break;
+    break;
 
-            case Key_mappings.pauseKey:
-                pauseGame();
-                break;
-        }
-        quadron.updateShadow(currentQuad,currentPlayField);
+    case Key_mappings.moveLeftButton:
+        moveLeft();
+    break;
+        
+    case Key_mappings.moveRightButton:
+        moveRight();
+    break;
 
+    case Key_mappings.moveDownbutton:
+        moveDown();
+    break;
+
+    case Key_mappings.pauseKey:
+        pauseGame();
+        break;
+    }
+    quadron.updateShadow(playField);
 }
 
-function pauseGame() {
+const pauseGame= function(): void {
     currentGameState = GAME_STATE.paused;
     pauseLabel.style.display ="";
 
 }
 
-function unPauseGame() {
+const unPauseGame = function(): void {
     currentGameState = GAME_STATE.started;
     pauseLabel.style.display ="none";
 }
 
-function pauseScreenKeyInputHandler(keyCode){
+const pauseScreenKeyInputHandler = function(keyCode: Key_mappings): void{
     switch (keyCode) {
         case  Key_mappings.pauseKey:
             unPauseGame();
             break;
-
     }
 }
 
 
-function moveLeft () {
-    currentQuad.TopX--;
-    if(quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
-        currentQuad.TopX++;
-     }
-}
-
-function moveRight() {
-    currentQuad.TopX++;
-    if(quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
-        currentQuad.TopX--;
-    }    
-}
-
-function moveDown() {
-    currentQuad.TopY++;
-    if(quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
-        currentQuad.TopY--;
-        // and land the Quad:
-
-        quadron.landQuad(currentPlayField,currentQuad);
-
-        currentGameState = GAME_STATE.landing;
-        currentQuad = null;
-        
-               
-        return false;
+const moveLeft = function(): void {
+    currentPlayField.CurrentQuad.TopY--;
+    if(quadron.checkQuadOverlaps(currentPlayField)){
+        currentPlayField.CurrentQuad.TopX++;
     }
-    return true;
 }
 
-function renderGame(timeStamp){
+const moveRight= function(): void {
+    currentPlayField.CurrentQuad.TopX++;
+    if(quadron.checkQuadOverlaps(currentPlayField)){
+        currentPlayField.CurrentQuad.TopX--;
+    }
+}
+
+const moveDown = function(): boolean {
+    let retVal: boolean = false;
+    currentPlayField.CurrentQuad.TopY++;
+        if(quadron.checkQuadOverlaps(currentPlayField)){
+            currentPlayField.CurrentQuad.TopY--;
+            // and land the Quad:
+
+            quadron.landQuad(currentPlayField);
+
+            currentGameState = GAME_STATE.landing;
+            currentPlayField.CurrentQuad = currentPlayField.nextQuad();
+            
+                
+            retVal= false;
+        }else {
+            retVal = true;
+        }
+    return retVal;
+}
+
+const renderGame = function(timeStamp: number) : void{
     switch(currentGameState) {
         case GAME_STATE.started:
             calculateGameState(timeStamp);
@@ -184,18 +175,14 @@ function renderGame(timeStamp){
         
         case GAME_STATE.landing:
             calculateLandingState(timeStamp);
-        break;
-        
+        break;   
     }
+    drawPlayField(currentPlayField,currentctxt);
     
-    drawPlayField(currentPlayField,currentQuad,currentctxt);
-    
-    
-    currentWindow.requestAnimationFrame(renderGame)
-
+    currentWindow.requestAnimationFrame(renderGame);
 }
 
-function calculateCurrentFallingIntervall(level) {
+const calculateCurrentFallingIntervall = function(level : number): number {
     if(level >9) {
         return fallingIntervall - 450;
     }
@@ -203,40 +190,27 @@ function calculateCurrentFallingIntervall(level) {
     return fallingIntervall - (level *50);
 }
 
-function calculateGameState(timeStamp){
-    fallingTimer += (timeStamp - lastRenderTimeStamp);
+const calculateGameState = function(timeStamp: number): void{
+    currentPlayField.fallingTimer += (timeStamp - lastRenderTimeStamp);
     lastRenderTimeStamp = timeStamp;
     
     // falling function:
-    if(fallingTimer / calculateCurrentFallingIntervall(currentLevel) > 1) {
-        fallingTimer = 0;
+    if(currentPlayField.fallingTimer / calculateCurrentFallingIntervall(currentLevel) > 1) {
+        currentPlayField.fallingTimer = 0;
         fallingFunction();
     }
-        
-    
-    
-    if(null === currentQuad){
-        fallingTimer =0;
-        
-        if(nextQuads.length ===0){
-            replenishQuad();
-        }
-        currentQuad = nextQuads.shift();
-        quadron.updateShadow(currentQuad,currentPlayField);
-        replenishQuad();
-        if( quadron.checkQuadOverlaps(currentPlayField,currentQuad)){
-            currentGameState = GAME_STATE.gameOver;
-            PauseButton.style.display ="none";
-            pauseLabel.style.display ="none";
-            toggleGameScren(currentWindow,false);
-            toggleGameOverScren(currentWindow,true);
 
-        }
+    quadron.updateShadow(currentPlayField);
+    if( quadron.checkQuadOverlaps(currentPlayField)){
+        currentGameState = GAME_STATE.gameOver;
+        PauseButton.style.display ="none";
+        pauseLabel.style.display ="none";
+        toggleGameScren(currentWindow,false);
+        toggleGameOverScren(currentWindow,true);
     }
 }
 
-function calculateEliminationState(timeStamp) {
-    
+const calculateEliminationState= function(timeStamp: number): void {
     // find removable cells
     if(0 === rowsToBeEliminated.length){
         rowsToBeEliminated = quadron.getCompleteRowIndexes(currentPlayField);
@@ -258,7 +232,7 @@ function calculateEliminationState(timeStamp) {
             let rowIndex = rowsToBeEliminated[i];
             
             for(let column =1; column < currentPlayField.Cells[rowIndex].length -1;column++){
-                let cell = quadron.CellTemplate();
+                let cell = quadron.Cell.CellTemplate();
                 cell.color = currentPlayField.Cells[rowIndex][column].color;
                 cell.opacity = newOpacity;
                 currentPlayField.Cells[rowIndex][column] = cell;
@@ -279,15 +253,12 @@ function calculateEliminationState(timeStamp) {
     }
 }
 
-function calculateLandingState(timeStamp) {
+const calculateLandingState = function(timeStamp: number) : void {
     currentGameState = GAME_STATE.elimination;
 }
 
-function resetGame(){
-    currentPlayField = quadron.PlayfieldTemplate();
-    currentQuad = null;
-    nextQuads.length =0;
-    
+const resetGame = function(): void{
+    currentPlayField = new quadron.PlayField();  
     
     currentLevel =0;
     currentScore =0;
@@ -297,27 +268,23 @@ function resetGame(){
     
 }
 
-function replenishQuad(){
-    while (nextQuads.length<=3){
-        nextQuads.push(quadron.getRandomQuad(Math.floor(Math.random() * 100)));
-    }
-}
 
 
 
-function setup(windowHandle) {
+
+const setup = function(windowHandle: any) : void {
 
     pauseLabel = windowHandle.document.getElementById("pauseLabel");
     pauseLabel.style.display ="none";
 
-    pauseButton = windowHandle.document.getElementById("PauseButton");
-    pauseButton.style.display = "none";
+    PauseButton = windowHandle.document.getElementById("PauseButton");
+    PauseButton.style.display = "none";
 
     toggleGameOverScren(windowHandle,false);
     
     setupStartButtonCallback(windowHandle);
 
-    pauseButton.onclick = function () {
+    PauseButton.onclick = function () {
         switch (currentGameState){
             case GAME_STATE.started:
                 pauseGame();
@@ -334,10 +301,10 @@ function setup(windowHandle) {
     
     
     // getting the context from canvas element:
-    currentctxt = drawing.setupCanvas(windowHandle.document, 
+    currentctxt = draw.setupCanvas(windowHandle.document, 
                                       "theCanvas",
-                                      quadron.PLAYFIELDDIMENSIONS.Columns * (cellSize + cellOffset),
-                                      quadron.PLAYFIELDDIMENSIONS.Rows * (cellSize + cellOffset));
+                                      quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
+                                      quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
 
     quadTextures = windowHandle.document.getElementById("quadTextures");
     quadTextures.style.display ="none";
@@ -351,18 +318,18 @@ function setup(windowHandle) {
     thirdPreviewCanvas =windowHandle.document.getElementById("thirdPreview");
  
 
-    firstPreviewCtxt = drawing.setupCanvas(windowHandle.document, 
+    firstPreviewCtxt = draw.setupCanvas(windowHandle.document, 
                                       "firstPreview",
                                       previewLenght * (previewCellsize +previewCellOffset),
                                       previewLenght * (previewCellsize +previewCellOffset));           
     
 
-    secondPreviewCtxt = drawing.setupCanvas(windowHandle.document, 
+    secondPreviewCtxt = draw.setupCanvas(windowHandle.document, 
                                   "secondPreview",
                                   previewLenght * (previewCellsize +previewCellOffset),
                                   previewLenght * (previewCellsize +previewCellOffset));
 
-    thirdPreviewCtxt = drawing.setupCanvas(windowHandle.document, 
+    thirdPreviewCtxt = draw.setupCanvas(windowHandle.document, 
                                       "thirdPreview",
                                       previewLenght * (previewCellsize +previewCellOffset),
                                       previewLenght * (previewCellsize +previewCellOffset));
@@ -383,7 +350,7 @@ function setup(windowHandle) {
     currentWindow.requestAnimationFrame(renderGame);
 }
 
-function toggleGameOverScren(windowHandle, showGameOverScreen){
+const toggleGameOverScren = function(windowHandle : any, showGameOverScreen: boolean): void{
 
     if(showGameOverScreen){
         windowHandle.document.getElementById("GameOverScreen").style.display = "";
@@ -395,11 +362,11 @@ function toggleGameOverScren(windowHandle, showGameOverScreen){
     }
 }
 
-function toggleGameScren(windowHandle, showGameOverScreen){
+const toggleGameScren= function(windowHandle: any, showGameOverScreen: boolean): void{
     windowHandle.document.getElementById("GameContainer").style.display = (showGameOverScreen) ? "" : "none";
 }
 
-function setupStartButtonCallback(windowHandle) {
+const setupStartButtonCallback= function(windowHandle: any) {
 
     let startNewGameAfterGameOver = windowHandle.document.getElementById("restartGameButton");
     let startnewGameButton = windowHandle.document.getElementById("startNewGameButton");
@@ -418,7 +385,7 @@ function setupStartButtonCallback(windowHandle) {
 }
 
 
-function startNewGame() {
+const startNewGame = function():void {
     // reset the playfield:
     resetGame();
     currentGameState = GAME_STATE.started;
@@ -430,16 +397,16 @@ function startNewGame() {
     currentWindow.requestAnimationFrame(renderGame);
 }
 
-function fallingFunction() {
-    if(null !== currentQuad) {
+const fallingFunction= function(): void {
+    if(null !== currentPlayField.CurrentQuad) {
         moveDown();
     }
 }
 
 
-function drawPlayField(playField, quad, ctxt){
+const drawPlayField= function(playField: quadron.PlayField, ctxt: any): void{
 
-    drawing.clearCanvas(
+    draw.clearCanvas(
     ctxt, 
     0, 
     0,
@@ -447,87 +414,69 @@ function drawPlayField(playField, quad, ctxt){
     playField.Cells.length * (cellSize +cellOffset));
 
     // first render the field without the quad:
-    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,0);
+    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,0,1);
 
     //drawing.drawCellTexture(currentctxt,TextureDictionary.getTextureByID("Green"),50,50,20,20,1.0);
-    
-    
-    if(null !== quad){
-        drawCells(ctxt,quad.Cells,cellSize,cellOffset,quad.TopX,quad.ShadowTopY,0.4);
-        drawCells(ctxt,quad.Cells,cellSize,cellOffset,quad.TopX,quad.TopY,1.0);
+    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY,0.4);
+    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY,1.0);
 
-    }
+    
     
     levelIndicator.innerText = currentLevel;
     scoreIndicator.innerText = currentScore;
     lineIndicator.innerText = rowsEliminatedSoFar;
     
-    if(null !== nextQuads){
-        let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
-        drawing.clearCanvas(firstPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
-        drawing.clearCanvas(secondPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
-        drawing.clearCanvas(thirdPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
-        if(null !== nextQuads[0]){
-            drawCells(firstPreviewCtxt,nextQuads[0].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-        }
-        
-        if(null !== nextQuads[1]){
-            drawCells(secondPreviewCtxt,nextQuads[1].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-        }
-        if(null !== nextQuads[2]){
-            drawCells(thirdPreviewCtxt,nextQuads[2].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-        }   
-    }
+
+    let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
+    draw.clearCanvas(firstPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
+    draw.clearCanvas(secondPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
+    draw.clearCanvas(thirdPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
+
+    drawCells(firstPreviewCtxt,currentPlayField.nextQuads[0].Cells,previewCellsize,previewCellOffset,0,0,1.0);
+    drawCells(secondPreviewCtxt,currentPlayField.nextQuads[1].Cells,previewCellsize,previewCellOffset,0,0,1.0);
+    drawCells(thirdPreviewCtxt,currentPlayField.nextQuads[2].Cells,previewCellsize,previewCellOffset,0,0,1.0);
     
 }
-function createTextureDictionary (textureAtlas) {
-    const _greyTexture = texture(textureAtlas,0,0,30,30);
-    const _goldTexture = texture(textureAtlas,30,0,30,30);
-    const _orangeTexture = texture(textureAtlas,60,0,30,30);
-    const _blueTexture = texture(textureAtlas,90,0,30,30);
-    const _cyanTexture = texture(textureAtlas,120,0,30,30);
-    const _greenTexture = texture(textureAtlas,150,0,30,30);
-    const _redTexture = texture(textureAtlas,180,0,30,30);
-    const _blueVioletTexture = texture(textureAtlas,210,0,30,30);
+const createTextureDictionary = function(textureAtlas: any) {
+    const _greyTexture = new draw.Texture(textureAtlas,0,0,30,30);
+    const _goldTexture = new draw.Texture(textureAtlas,30,0,30,30);
+    const _orangeTexture = new draw.Texture(textureAtlas,60,0,30,30);
+    const _blueTexture = new draw.Texture(textureAtlas,90,0,30,30);
+    const _cyanTexture = new draw.Texture(textureAtlas,120,0,30,30);
+    const _greenTexture = new draw.Texture(textureAtlas,150,0,30,30);
+    const _redTexture = new draw.Texture(textureAtlas,180,0,30,30);
+    const _blueVioletTexture = new draw.Texture(textureAtlas,210,0,30,30);
 
     return {
-        getTextureByID : function (id) {
+        getTextureByID : function (id: quadron.CELL_COLORS) {
+            
             switch (id){
                 case quadron.CELL_COLORS.Border:
                  return _greyTexture;
-                 break;
 
                 case quadron.CELL_COLORS.OColor:
                     return _goldTexture;
-                    break;
 
                 case  quadron.CELL_COLORS.LColor:
                     return _orangeTexture;
-                    break;
 
                 case quadron.CELL_COLORS.JColor:
                     return _blueTexture;
-                    break;
 
                 case quadron.CELL_COLORS.IColor:
                     return _cyanTexture;
-                    break;
 
                 case quadron.CELL_COLORS.SColor:
                     return _greenTexture;
-                    break;
 
                 case quadron.CELL_COLORS.ZColor:
                     return _redTexture;
-                    break;
 
                 case quadron.CELL_COLORS.TColor:
                     return _blueVioletTexture;
-                    break;
 
                 default:
                     return _greyTexture;
-                    break;
             }
         }
     }
@@ -535,7 +484,7 @@ function createTextureDictionary (textureAtlas) {
 }
 
 
-function drawCells(ctxt,CellsToDraw,cellSize,cellOffset,startingColumn,startingRow,opacity){
+const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number): void{
         for(let row = 0;row < CellsToDraw.length; row++){
             for(let column = 0; column < CellsToDraw[row].length; column++) {
                 if(CellsToDraw[row][column].visible){
@@ -545,7 +494,7 @@ function drawCells(ctxt,CellsToDraw,cellSize,cellOffset,startingColumn,startingR
                         currentopacity =CellsToDraw[row][column].opacity;
                     }
 
-                    drawing.drawCellTexture(ctxt,
+                    draw.drawCellTexture(ctxt,
                                             TextureDictionary.getTextureByID(CellsToDraw[row][column].color),
                                             (cellSize +cellOffset) * (column +startingColumn),
                                             (cellSize +cellOffset)* (row +startingRow),cellSize,cellSize,currentopacity);
