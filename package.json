@@ -1,0 +1,27 @@
+{
+  "name": "quadron",
+  "version": "1.0.0",
+  "description": "a tile matching game",
+  "main": "index.js",
+  "bin": {
+    "quadron": "index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJawna/Quadron.git"
+  },
+  "keywords": [
+    "game",
+    "tile-matching"
+  ],
+  "author": "Daniel Jawna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DJawna/Quadron/issues"
+  },
+  "homepage": "https://github.com/DJawna/Quadron#readme"
+}
