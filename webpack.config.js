@@ -5,7 +5,9 @@ module.exports = {
     node: { fs: 'empty' },
     plugins: [
         new CopyPlugin([
-          "quadron.css"
+          "index.css",
+          "index.html",
+          "assets/*"
         ]),
     ],
   entry: './index.ts',
