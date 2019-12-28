@@ -23,5 +23,12 @@
   "bugs": {
     "url": "https://github.com/DJawna/Quadron/issues"
   },
-  "homepage": "https://github.com/DJawna/Quadron#readme"
+  "homepage": "https://github.com/DJawna/Quadron#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "typescript": "^3.7.4",
+    "typescript-cli": "^0.1.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
 }

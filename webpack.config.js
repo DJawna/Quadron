@@ -1,6 +1,13 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+    node: { fs: 'empty' },
+    plugins: [
+        new CopyPlugin([
+          "quadron.css"
+        ]),
+    ],
   entry: './index.ts',
   devtool: 'inline-source-map',
   module: {
@@ -13,7 +20,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: [ '.tsx', '.ts', '.js' ]
   },
   output: {
     filename: 'bundle.js',
