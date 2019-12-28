@@ -7,7 +7,7 @@
     "quadron": "index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "webpack webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
