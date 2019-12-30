@@ -11,7 +11,7 @@ module.exports = {
         ]),
     ],
   entry: './index.ts',
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -25,7 +25,7 @@ module.exports = {
     extensions: [ '.tsx', '.ts', '.js' ]
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'bin'),
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
 };
