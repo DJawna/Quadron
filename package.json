@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "a tile matching game",
   "scripts": {
-    "start": "webpack --config webpack.dev.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --watch --config webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "typescript-cli": "^0.1.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
     "webpack-merge": "^4.2.2"
   }
 }
