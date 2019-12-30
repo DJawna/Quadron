@@ -4,7 +4,29 @@ Tile matching game with Blocks which go down, complete the Rows and progress to 
 
 ## How to run the Game?
 
-1. Download and upack the package from here: https://github.com/DJawna/Quadron/releases
-2. Rightclick on the file: Quadron.html and open it with chrome / firefox or edge
-3. cursor left / right: move block left right, cursor up: rotate block,
-   cursor down: move block down one line, space: make the block land fast.
+### Step1: Install npm dependencies
+
+```
+$>npm install
+```
+
+### Step2.A: build and run localy
+
+```
+$>npm run start
+```
+Note: a development server wich will rebuild the code upon change is also configured with this option.
+
+### Step2.B: build lean release version
+
+
+```
+$>npm run build
+```
+
+Note: there are no source maps beeing build with this variation.
+
+## How to play?
+
+the cursor buttons will stear the falling quadron left, right and down. space will land the quadron immediately. the up button will rotate the quadron.
+

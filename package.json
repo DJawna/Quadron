@@ -2,6 +2,7 @@
   "name": "quadron",
   "version": "1.0.0",
   "description": "a tile matching game",
+  "private": true,
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
