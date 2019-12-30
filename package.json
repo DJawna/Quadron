@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/DJawna/Quadron#readme",
   "devDependencies": {
+    "@types/pixi.js": "^5.0.0",
     "copy-webpack-plugin": "^5.1.1",
+    "pixi.js": "^5.2.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.4",
     "typescript-cli": "^0.1.0",
