@@ -130,7 +130,7 @@ const pauseScreenKeyInputHandler = function(keyCode: Key_mappings): void{
 
 
 const moveLeft = function(): void {
-    currentPlayField.CurrentQuad.TopY--;
+    currentPlayField.CurrentQuad.TopX--;
     if(quadron.checkQuadOverlaps(currentPlayField)){
         currentPlayField.CurrentQuad.TopX++;
     }

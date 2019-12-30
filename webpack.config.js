@@ -14,7 +14,7 @@ module.exports = {
   entry: {
     "main" : './src/index.ts'
   } ,
-  devtool: 'cheap-module-source-map',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
