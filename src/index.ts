@@ -1,5 +1,5 @@
 import  * as quadron from "./quadron";
-import * as draw from "./draw";
+import * as draw from "./canvas_draw";
 
 let currentWindow: any = null;
 
