@@ -23,25 +23,6 @@ export const fillCanvas = function (canvasCtxt: any, x: number, y: number, width
     canvasCtxt.globalAlpha = 1.0;
 };
 
-const drawRectangle = function (canvasCtxt: any, x: number, y: number, width: number, height: number, color: string, lineWidht: number): void {
-    canvasCtxt.strokeStyle = color;
-    canvasCtxt.lineWidth = lineWidht;
-
-    canvasCtxt.rect(x, y, width, height);
-    canvasCtxt.stroke();
-};
-
-
-const drawLine = function (canvasCtxt: any, xbegin: number, ybegin: number, xend: number, yend: number, color: string, width: number): void {
-    let currentStrokeStyle = canvasCtxt.strokeStyle;
-    canvasCtxt.strokeStyle = color;
-    canvasCtxt.lineWidth = width;
-    canvasCtxt.moveTo(xbegin, ybegin);
-    canvasCtxt.lineTo(xend, yend);
-    canvasCtxt.stroke();
-    canvasCtxt.strokeStyle = currentStrokeStyle;
-};
-
 export const drawCellTexture = function(canvasCtxt: any,texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void{
     canvasCtxt.globalAlpha = opacity;
     canvasCtxt.drawImage(texture.img,
