@@ -3,8 +3,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
-  mode: "development",
-
   node: { fs: 'empty' },
   plugins: [
     new CopyPlugin([
@@ -16,7 +14,6 @@ module.exports = {
   entry: {
     "main": './src/index.ts'
   },
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
