@@ -269,87 +269,6 @@ const resetGame = function(): void{
 }
 
 
-
-
-
-const setup = function(windowHandle: any) : void {
-
-    pauseLabel = windowHandle.document.getElementById("pauseLabel");
-    pauseLabel.style.display ="none";
-
-    PauseButton = windowHandle.document.getElementById("PauseButton");
-    PauseButton.style.display = "none";
-
-    toggleGameOverScren(windowHandle,false);
-    
-    setupStartButtonCallback(windowHandle);
-
-    PauseButton.onclick = function () {
-        switch (currentGameState){
-            case GAME_STATE.started:
-                pauseGame();
-                break;
-
-            case GAME_STATE.paused:
-                unPauseGame();
-        }
-    };
-    
-    levelIndicator = windowHandle.document.getElementById("levelindicator");
-    scoreIndicator = windowHandle.document.getElementById("scoreindicator");
-    lineIndicator = windowHandle.document.getElementById("LinesIndicator");
-    
-    
-    // getting the context from canvas element:
-    currentctxt = draw.setupCanvas(windowHandle.document, 
-                                      "theCanvas",
-                                      quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-                                      quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
-
-    quadTextures = windowHandle.document.getElementById("quadTextures");
-    quadTextures.style.display ="none";
-
-
-    TextureDictionary = createTextureDictionary(quadTextures);
-                                      
-                                      
-    firstPreviewCanvas = windowHandle.document.getElementById("firstPreview");
-    secondPreviewCanvas = windowHandle.document.getElementById("secondPreview");
-    thirdPreviewCanvas =windowHandle.document.getElementById("thirdPreview");
- 
-
-    firstPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                      "firstPreview",
-                                      previewLenght * (previewCellsize +previewCellOffset),
-                                      previewLenght * (previewCellsize +previewCellOffset));           
-    
-
-    secondPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                  "secondPreview",
-                                  previewLenght * (previewCellsize +previewCellOffset),
-                                  previewLenght * (previewCellsize +previewCellOffset));
-
-    thirdPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                      "thirdPreview",
-                                      previewLenght * (previewCellsize +previewCellOffset),
-                                      previewLenght * (previewCellsize +previewCellOffset));
-                                  
-    fpsIndicator = windowHandle.document.getElementById("fps");
-    
-    
-
-
-    //setup controls
-    currentWindow = windowHandle;
-    currentWindow.onkeydown = keyHandler;
-
-    resetGame();
-
-    currentGameState = GAME_STATE.notStarted;
-    
-    currentWindow.requestAnimationFrame(renderGame);
-}
-
 const toggleGameOverScren = function(windowHandle : any, showGameOverScreen: boolean): void{
 
     if(showGameOverScreen){
@@ -506,3 +425,82 @@ const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: num
 }
 
 
+const main = function(windowHandle: any) : void {
+
+    pauseLabel = windowHandle.document.getElementById("pauseLabel");
+    pauseLabel.style.display ="none";
+
+    PauseButton = windowHandle.document.getElementById("PauseButton");
+    PauseButton.style.display = "none";
+
+    toggleGameOverScren(windowHandle,false);
+    
+    setupStartButtonCallback(windowHandle);
+
+    PauseButton.onclick = function () {
+        switch (currentGameState){
+            case GAME_STATE.started:
+                pauseGame();
+                break;
+
+            case GAME_STATE.paused:
+                unPauseGame();
+        }
+    };
+    
+    levelIndicator = windowHandle.document.getElementById("levelindicator");
+    scoreIndicator = windowHandle.document.getElementById("scoreindicator");
+    lineIndicator = windowHandle.document.getElementById("LinesIndicator");
+    
+    
+    // getting the context from canvas element:
+    currentctxt = draw.setupCanvas(windowHandle.document, 
+                                      "theCanvas",
+                                      quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
+                                      quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
+
+    quadTextures = windowHandle.document.getElementById("quadTextures");
+    quadTextures.style.display ="none";
+
+
+    TextureDictionary = createTextureDictionary(quadTextures);
+                                      
+                                      
+    firstPreviewCanvas = windowHandle.document.getElementById("firstPreview");
+    secondPreviewCanvas = windowHandle.document.getElementById("secondPreview");
+    thirdPreviewCanvas =windowHandle.document.getElementById("thirdPreview");
+ 
+
+    firstPreviewCtxt = draw.setupCanvas(windowHandle.document, 
+                                      "firstPreview",
+                                      previewLenght * (previewCellsize +previewCellOffset),
+                                      previewLenght * (previewCellsize +previewCellOffset));           
+    
+
+    secondPreviewCtxt = draw.setupCanvas(windowHandle.document, 
+                                  "secondPreview",
+                                  previewLenght * (previewCellsize +previewCellOffset),
+                                  previewLenght * (previewCellsize +previewCellOffset));
+
+    thirdPreviewCtxt = draw.setupCanvas(windowHandle.document, 
+                                      "thirdPreview",
+                                      previewLenght * (previewCellsize +previewCellOffset),
+                                      previewLenght * (previewCellsize +previewCellOffset));
+                                  
+    fpsIndicator = windowHandle.document.getElementById("fps");
+    
+    
+
+
+    //setup controls
+    currentWindow = windowHandle;
+    currentWindow.onkeydown = keyHandler;
+
+    resetGame();
+
+    currentGameState = GAME_STATE.notStarted;
+    
+    currentWindow.requestAnimationFrame(renderGame);
+};
+
+main(window);
