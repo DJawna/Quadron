@@ -351,10 +351,16 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: any): void{
     draw.clearCanvas(secondPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
     draw.clearCanvas(thirdPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
 
-    drawCells(firstPreviewCtxt,currentPlayField.nextQuads[0].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-    drawCells(secondPreviewCtxt,currentPlayField.nextQuads[1].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-    drawCells(thirdPreviewCtxt,currentPlayField.nextQuads[2].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-    
+    if (currentGameState !== GAME_STATE.gameOver 
+        && 
+        currentGameState !== GAME_STATE.notStarted){
+            drawCells(firstPreviewCtxt,currentPlayField.nextQuads[0].Cells,previewCellsize,previewCellOffset,0,0,1.0);
+            drawCells(secondPreviewCtxt,currentPlayField.nextQuads[1].Cells,previewCellsize,previewCellOffset,0,0,1.0);
+            drawCells(thirdPreviewCtxt,currentPlayField.nextQuads[2].Cells,previewCellsize,previewCellOffset,0,0,1.0);
+            
+    }
+
+
 }
 const createTextureDictionary = function(textureAtlas: any) {
     const _greyTexture = new draw.Texture(textureAtlas,0,0,30,30);
