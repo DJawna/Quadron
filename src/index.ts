@@ -4,14 +4,21 @@ import * as draw from "./canvas_draw";
 let currentWindow: any = null;
 
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
-let currentctxt: any = null;
+
+
 const cellSize: number = 30;
 const cellOffset: number = 0;
+
+const currentctxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+    "theCanvas",
+    quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
+    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
+
 const previewLenght: number =4;
 const previewCellsize: number = 24;
 const previewCellOffset: number =1;
 let lastRenderTimeStamp: number =0;
-let fpsIndicator = null;
+
 
 const fallingIntervall: number = 500;
 let rowsToBeEliminated: number[] =[];
@@ -24,13 +31,20 @@ let rowsEliminatedSoFar: number =0;
 let scoreIndicator: any =null;
 let levelIndicator: any =null;
 let lineIndicator: any = null;
-let firstPreviewCanvas = null;
-let secondPreviewCanvas = null;
-let thirdPreviewCanvas =null;
 
-let firstPreviewCtxt: any = null;
-let secondPreviewCtxt: any = null;
-let thirdPreviewCtxt: any =null;
+
+let firstPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+    "firstPreview",
+    previewLenght * (previewCellsize +previewCellOffset),
+    previewLenght * (previewCellsize +previewCellOffset));
+let secondPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+    "secondPreview",
+    previewLenght * (previewCellsize +previewCellOffset),
+    previewLenght * (previewCellsize +previewCellOffset));
+let thirdPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+    "thirdPreview",
+    previewLenght * (previewCellsize +previewCellOffset),
+    previewLenght * (previewCellsize +previewCellOffset));
 let quadTextures = null;
 let TextureDictionary: any = null;
 let pauseLabel: any = null;
@@ -323,10 +337,9 @@ const fallingFunction= function(): void {
 }
 
 
-const drawPlayField= function(playField: quadron.PlayField, ctxt: any): void{
+const drawPlayField= function(playField: quadron.PlayField, ctxt: draw.canvas_draw): void{
 
-    draw.clearCanvas(
-    ctxt, 
+    ctxt.clearCanvas(
     0, 
     0,
     playField.Cells[0].length * (cellSize +cellOffset), 
@@ -347,9 +360,9 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: any): void{
     
 
     let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
-    draw.clearCanvas(firstPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
-    draw.clearCanvas(secondPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
-    draw.clearCanvas(thirdPreviewCtxt,0,0,sizeOfPreview,sizeOfPreview);
+    firstPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
+    secondPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
+    thirdPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
 
     if (currentGameState !== GAME_STATE.gameOver 
         && 
@@ -409,7 +422,7 @@ const createTextureDictionary = function(textureAtlas: any) {
 }
 
 
-const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
+const drawCells= function(ctxt : draw.canvas_draw,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
         for(let row = 0;row < CellsToDraw.length; row++){
             for(let column = 0; column < CellsToDraw[row].length; column++) {
                 if(CellsToDraw[row][column].visible){
@@ -419,13 +432,11 @@ const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: num
                         currentopacity =opacity;
                     }
 
-                    draw.drawCellTexture(ctxt,
-                                            TextureDictionary.getTextureByID(CellsToDraw[row][column].color),
+                    ctxt.drawCellTexture(   TextureDictionary.getTextureByID(CellsToDraw[row][column].color),
                                             (cellSize +cellOffset) * (column +startingColumn),
                                             (cellSize +cellOffset)* (row +startingRow),cellSize,cellSize,currentopacity);
 
                 }
-                
             }
     }
 }
@@ -458,46 +469,12 @@ const main = function(windowHandle: any) : void {
     scoreIndicator = windowHandle.document.getElementById("scoreindicator");
     lineIndicator = windowHandle.document.getElementById("LinesIndicator");
     
-    
-    // getting the context from canvas element:
-    currentctxt = draw.setupCanvas(windowHandle.document, 
-                                      "theCanvas",
-                                      quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-                                      quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
-
     quadTextures = windowHandle.document.getElementById("quadTextures");
     quadTextures.style.display ="none";
 
 
     TextureDictionary = createTextureDictionary(quadTextures);
                                       
-                                      
-    firstPreviewCanvas = windowHandle.document.getElementById("firstPreview");
-    secondPreviewCanvas = windowHandle.document.getElementById("secondPreview");
-    thirdPreviewCanvas =windowHandle.document.getElementById("thirdPreview");
- 
-
-    firstPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                      "firstPreview",
-                                      previewLenght * (previewCellsize +previewCellOffset),
-                                      previewLenght * (previewCellsize +previewCellOffset));           
-    
-
-    secondPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                  "secondPreview",
-                                  previewLenght * (previewCellsize +previewCellOffset),
-                                  previewLenght * (previewCellsize +previewCellOffset));
-
-    thirdPreviewCtxt = draw.setupCanvas(windowHandle.document, 
-                                      "thirdPreview",
-                                      previewLenght * (previewCellsize +previewCellOffset),
-                                      previewLenght * (previewCellsize +previewCellOffset));
-                                  
-    fpsIndicator = windowHandle.document.getElementById("fps");
-    
-    
-
-
     //setup controls
     currentWindow = windowHandle;
     currentWindow.onkeydown = keyHandler;

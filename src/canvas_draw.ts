@@ -1,5 +1,5 @@
 
-class canvas_draw {
+export class canvas_draw {
     readonly canvasCtxt : CanvasRenderingContext2D;
 
     public constructor(document : Document, canvasID: string,width: number, height: number){
@@ -46,37 +46,6 @@ class canvas_draw {
     }
 }
 
-
-// no longer needed, the constructor will do that!
-export const setupCanvas = function (document : any, canvasID: string,width: number, height: number): any {
-    let canvasElement = document.getElementById(canvasID);
-    canvasElement.width = width;
-    canvasElement.height = height;
-    return canvasElement.getContext("2d");
-};
-
-export const fillCanvas = function (canvasCtxt: any, x: number, y: number, width: number, height: number, color: string, opacity: number): void {
-    canvasCtxt.globalAlpha = opacity;
-    canvasCtxt.fillStyle = color;
-    canvasCtxt.fillRect(x, y, width, height);
-    canvasCtxt.globalAlpha = 1.0;
-};
-
-export const drawCellTexture = function(canvasCtxt: any,texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void{
-    canvasCtxt.globalAlpha = opacity;
-    canvasCtxt.drawImage(texture.img,
-                         texture.sx,
-                         texture.sy,
-                         texture.swidth,
-                         texture.sheight,
-                         x,
-                         y,
-                         width,
-                         height);
-    canvasCtxt.globalAlpha = 1.0;
-    canvasCtxt.globalAlpha = 1.0;
-};
-
 export class Texture{
     public readonly img: any;
     public readonly sx: number;
@@ -93,15 +62,3 @@ export class Texture{
     }
 
 }
-
-
-
-export const clearCanvas =function (canvasCtxt: any,topX: number,topY: number,Width: number,Height: number): void {
-    canvasCtxt.save();
-
-    canvasCtxt.setTransform(1,0,0,1,0,0);
-
-    canvasCtxt.clearRect(topX,topY,Width,Height);
-
-    canvasCtxt.restore();
-};
