@@ -1,5 +1,6 @@
 import  * as quadron from "./quadron";
 import * as draw from "./canvas_draw";
+import {Texture} from "./draw_contracts";
 
 let currentWindow: any = null;
 
@@ -376,14 +377,14 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: draw.canvas_dr
 
 }
 const createTextureDictionary = function(textureAtlas: any) {
-    const _greyTexture = new draw.Texture(textureAtlas,0,0,30,30);
-    const _goldTexture = new draw.Texture(textureAtlas,30,0,30,30);
-    const _orangeTexture = new draw.Texture(textureAtlas,60,0,30,30);
-    const _blueTexture = new draw.Texture(textureAtlas,90,0,30,30);
-    const _cyanTexture = new draw.Texture(textureAtlas,120,0,30,30);
-    const _greenTexture = new draw.Texture(textureAtlas,150,0,30,30);
-    const _redTexture = new draw.Texture(textureAtlas,180,0,30,30);
-    const _blueVioletTexture = new draw.Texture(textureAtlas,210,0,30,30);
+    const _greyTexture = new Texture(textureAtlas,0,0,30,30);
+    const _goldTexture = new Texture(textureAtlas,30,0,30,30);
+    const _orangeTexture = new Texture(textureAtlas,60,0,30,30);
+    const _blueTexture = new Texture(textureAtlas,90,0,30,30);
+    const _cyanTexture = new Texture(textureAtlas,120,0,30,30);
+    const _greenTexture = new Texture(textureAtlas,150,0,30,30);
+    const _redTexture = new Texture(textureAtlas,180,0,30,30);
+    const _blueVioletTexture = new Texture(textureAtlas,210,0,30,30);
 
     return {
         getTextureByID : function (id: quadron.CELL_COLORS) {
