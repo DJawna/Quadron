@@ -1,7 +1,9 @@
 
-import {Texture} from "./draw_contracts";
+import {Texture, IRenderer} from "./draw_contracts";
 
-export class canvas_draw {
+
+
+export class canvas_draw implements IRenderer {
     readonly canvasCtxt : CanvasRenderingContext2D;
 
     public constructor(document : Document, canvasID: string,width: number, height: number){
