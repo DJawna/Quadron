@@ -235,7 +235,7 @@ const calculateEliminationState= function(timeStamp: number): void {
                 let cell = quadron.Cell.CellTemplate();
                 cell.color = currentPlayField.Cells[rowIndex][column].color;
                 cell.opacity = newOpacity;
-                currentPlayField.Cells[rowIndex][column] = cell;
+                currentPlayField.Cells[rowIndex][column].opacity = newOpacity; // = cell;
             }
         }
 
@@ -333,11 +333,11 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: any): void{
     playField.Cells.length * (cellSize +cellOffset));
 
     // first render the field without the quad:
-    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,0,1);
+    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,0);
 
     //drawing.drawCellTexture(currentctxt,TextureDictionary.getTextureByID("Green"),50,50,20,20,1.0);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY,0.4);
-    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY,1.0);
+    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY);
 
     
     
@@ -403,14 +403,14 @@ const createTextureDictionary = function(textureAtlas: any) {
 }
 
 
-const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number): void{
+const drawCells= function(ctxt : any,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
         for(let row = 0;row < CellsToDraw.length; row++){
             for(let column = 0; column < CellsToDraw[row].length; column++) {
                 if(CellsToDraw[row][column].visible){
 
-                    let currentopacity = opacity;
-                    if(typeof opacity === "undefined"){
-                        currentopacity =CellsToDraw[row][column].opacity;
+                    let currentopacity = CellsToDraw[row][column].opacity;
+                    if(opacity !== undefined){
+                        currentopacity =opacity;
                     }
 
                     draw.drawCellTexture(ctxt,
