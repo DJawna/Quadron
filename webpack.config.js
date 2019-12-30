@@ -3,17 +3,19 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
-    node: { fs: 'empty' },
-    plugins: [
-        new CopyPlugin([
-          "index.css",
-          "index.html",
-          "assets/*"
-        ]),
-    ],
+  mode: "development",
+
+  node: { fs: 'empty' },
+  plugins: [
+    new CopyPlugin([
+      "index.css",
+      "index.html",
+      "assets/*"
+    ]),
+  ],
   entry: {
-    "main" : './src/index.ts'
-  } ,
+    "main": './src/index.ts'
+  },
   devtool: 'inline-source-map',
   module: {
     rules: [
@@ -25,7 +27,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     filename: '[name].bundle.js',
