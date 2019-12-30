@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
+
 module.exports = {
     node: { fs: 'empty' },
     plugins: [
@@ -10,7 +11,9 @@ module.exports = {
           "assets/*"
         ]),
     ],
-  entry: './index.ts',
+  entry: {
+    "main" : './src/index.ts'
+  } ,
   devtool: 'cheap-module-source-map',
   module: {
     rules: [

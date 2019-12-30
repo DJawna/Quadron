@@ -1,5 +1,5 @@
-import  * as quadron from "./quadron.js";
-import * as draw from "./draw.js";
+import  * as quadron from "./quadron";
+import * as draw from "./draw";
 
 let currentWindow: any = null;
 
