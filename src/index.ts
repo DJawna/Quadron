@@ -1,6 +1,6 @@
 import  * as quadron from "./quadron";
-import * as draw from "./canvas_draw";
-import {Texture} from "./draw_contracts";
+import {Texture, IRenderer} from "./draw_contracts";
+import * as di from "./di";
 
 let currentWindow: any = null;
 
@@ -10,7 +10,7 @@ let currentPlayField: quadron.PlayField = new quadron.PlayField();
 const cellSize: number = 30;
 const cellOffset: number = 0;
 
-const currentctxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+const currentctxt: IRenderer = di.getRenderer(window.document, 
     "theCanvas",
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
     quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
@@ -34,15 +34,15 @@ let levelIndicator: any =null;
 let lineIndicator: any = null;
 
 
-let firstPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+let firstPreviewCtxt: IRenderer = di.getRenderer(window.document, 
     "firstPreview",
     previewLenght * (previewCellsize +previewCellOffset),
     previewLenght * (previewCellsize +previewCellOffset));
-let secondPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+let secondPreviewCtxt: IRenderer = di.getRenderer(window.document, 
     "secondPreview",
     previewLenght * (previewCellsize +previewCellOffset),
     previewLenght * (previewCellsize +previewCellOffset));
-let thirdPreviewCtxt: draw.canvas_draw = new draw.canvas_draw(window.document, 
+let thirdPreviewCtxt: IRenderer = di.getRenderer(window.document, 
     "thirdPreview",
     previewLenght * (previewCellsize +previewCellOffset),
     previewLenght * (previewCellsize +previewCellOffset));
@@ -338,7 +338,7 @@ const fallingFunction= function(): void {
 }
 
 
-const drawPlayField= function(playField: quadron.PlayField, ctxt: draw.canvas_draw): void{
+const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): void{
 
     ctxt.clearCanvas(
     0, 
@@ -423,7 +423,7 @@ const createTextureDictionary = function(textureAtlas: any) {
 }
 
 
-const drawCells= function(ctxt : draw.canvas_draw,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
+const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
         for(let row = 0;row < CellsToDraw.length; row++){
             for(let column = 0; column < CellsToDraw[row].length; column++) {
                 if(CellsToDraw[row][column].visible){
