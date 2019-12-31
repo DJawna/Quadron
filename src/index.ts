@@ -11,7 +11,6 @@ const cellSize: number = 30;
 const cellOffset: number = 0;
 
 const currentctxt: IRenderer = di.getRenderer(window.document, 
-    "theCanvas",
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
     quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
 
