@@ -6,5 +6,5 @@ import {pixi_renderer} from "./pixi_renderer";
  */
 
 export const getRenderer = function(window: Window, width: number,height: number): IRenderer {
-    return /* new pixi_renderer(window,width,height); */ new canvas_draw(window,width,height)
+    return  new pixi_renderer(window,width,height);  /* new canvas_draw(window,width,height)*/
 }

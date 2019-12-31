@@ -6,11 +6,9 @@ export class pixi_renderer implements IRenderer{
     readonly app: pix.Application; 
     readonly tLoader: pix.Loader;
     readonly loadedTextures: string[]=[];
-    readonly cellSprites : pix.Sprite[] = [];
-    firstCanvasClearing: boolean;
 
     constructor(window : Window, width: number, height: number) {
-        this.firstCanvasClearing = false;
+
         let lookedUpElement  = window.document.getElementById("playArea");
         this.tLoader = new pix.Loader();
         if(lookedUpElement == null) throw "playArea Element does not exist!";
@@ -23,18 +21,13 @@ export class pixi_renderer implements IRenderer{
     }
 
     public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
-        if(this.firstCanvasClearing){
-            const rect = new pix.Graphics();
-            rect.beginFill(0x000000);
-            rect.drawRect(topX,topY,Width,Height);
-            rect.endFill();
-            rect.x=0;
-            rect.y=0;
-            this.app.stage.addChild(rect);
-            this.firstCanvasClearing= false;
-        }
-        this.cellSprites.forEach(i => i.alpha = 0);
-
+        const rect = new pix.Graphics();
+        rect.beginFill(0x000000);
+        rect.drawRect(topX,topY,Width,Height);
+        rect.endFill();
+        rect.x=0;
+        rect.y=0;
+        this.app.stage.addChild(rect);
     }
 
     public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
@@ -59,7 +52,7 @@ export class pixi_renderer implements IRenderer{
 
     public flushDrawBuffers(): void {
         this.app.render();
-        
+        this.app.stage.removeChildren();
         
     }
 
