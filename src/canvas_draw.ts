@@ -6,11 +6,11 @@ import {Texture, IRenderer} from "./draw_contracts";
 export class canvas_draw implements IRenderer {
     readonly canvasCtxt : CanvasRenderingContext2D;
 
-    public constructor(document : Document, width: number, height: number){
-        let lookedUpElement  = document.getElementById("playArea");
+    public constructor(window : Window, width: number, height: number){
+        let lookedUpElement  = window.document.getElementById("playArea");
         if(lookedUpElement == null) throw "playArea Element does not exist!";
 
-        const canvasElement: HTMLCanvasElement = document.createElement("canvas");
+        const canvasElement: HTMLCanvasElement = window.document.createElement("canvas");
 
         canvasElement.width = width;
         canvasElement.height = height;
@@ -44,5 +44,9 @@ export class canvas_draw implements IRenderer {
                              height);
         this.canvasCtxt.globalAlpha = 1.0;
         this.canvasCtxt.globalAlpha = 1.0;
+    }
+
+    public flushDrawBuffers(): void {
+        // no op for canvas_draw!
     }
 }

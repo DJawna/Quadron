@@ -19,4 +19,5 @@ export class Texture{
 export interface IRenderer{
     clearCanvas (topX: number,topY: number,Width: number,Height: number): void;
     drawCellTexture(texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void;
+    flushDrawBuffers(): void;
 }

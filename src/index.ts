@@ -2,15 +2,13 @@ import  * as quadron from "./quadron";
 import {Texture, IRenderer} from "./draw_contracts";
 import * as di from "./di";
 
-let currentWindow: any = null;
-
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
 
 
 const cellSize: number = 30;
 const cellOffset: number = 0;
 
-const currentctxt: IRenderer = di.getRenderer(window.document, 
+const currentctxt: IRenderer = di.getRenderer(window, 
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
     quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
 
@@ -181,7 +179,7 @@ const renderGame = function(timeStamp: number) : void{
     }
     drawPlayField(currentPlayField,currentctxt);
     
-    currentWindow.requestAnimationFrame(renderGame);
+    window.requestAnimationFrame(renderGame);
 }
 
 const calculateCurrentFallingIntervall = function(level : number): number {
@@ -207,8 +205,8 @@ const calculateGameState = function(timeStamp: number): void{
         currentGameState = GAME_STATE.gameOver;
         PauseButton.style.display ="none";
         pauseLabel.style.display ="none";
-        toggleGameScren(currentWindow,false);
-        toggleGameOverScren(currentWindow,true);
+        toggleGameScren(window,false);
+        toggleGameOverScren(window,true);
     }
 }
 
@@ -227,7 +225,7 @@ const calculateEliminationState= function(timeStamp: number): void {
     if(remainingRowsLifeTime > 0){
 
         let newOpacity =  remainingRowsLifeTime / vanishingRowsLifeTime;
-        currentWindow.console.log("newopacity: "+ newOpacity);
+        window.console.log("newopacity: "+ newOpacity);
 
         
         for(let i =0;i < rowsToBeEliminated.length; i++) {
@@ -298,8 +296,8 @@ const setupStartButtonCallback= function(windowHandle: any) {
     };
 
     startNewGameAfterGameOver.onclick = function (){
-        toggleGameOverScren(currentWindow,false);
-        toggleGameScren(currentWindow,true);
+        toggleGameOverScren(window,false);
+        toggleGameScren(window,true);
         startNewGame();
 
     }
@@ -315,7 +313,7 @@ const startNewGame = function():void {
 
 
 
-    currentWindow.requestAnimationFrame(renderGame);
+    window.requestAnimationFrame(renderGame);
 }
 
 const fallingFunction= function(): void {
@@ -416,17 +414,17 @@ const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSi
 }
 
 
-const main = function(windowHandle: any) : void {
+const main = function() : void {
 
-    pauseLabel = windowHandle.document.getElementById("pauseLabel");
+    pauseLabel = window.document.getElementById("pauseLabel");
     pauseLabel.style.display ="none";
 
-    PauseButton = windowHandle.document.getElementById("PauseButton");
+    PauseButton = window.document.getElementById("PauseButton");
     PauseButton.style.display = "none";
 
-    toggleGameOverScren(windowHandle,false);
+    toggleGameOverScren(window,false);
     
-    setupStartButtonCallback(windowHandle);
+    setupStartButtonCallback(window);
 
     PauseButton.onclick = function () {
         switch (currentGameState){
@@ -439,25 +437,26 @@ const main = function(windowHandle: any) : void {
         }
     };
     
-    levelIndicator = windowHandle.document.getElementById("levelindicator");
-    scoreIndicator = windowHandle.document.getElementById("scoreindicator");
-    lineIndicator = windowHandle.document.getElementById("LinesIndicator");
+    levelIndicator = window.document.getElementById("levelindicator");
+    scoreIndicator = window.document.getElementById("scoreindicator");
+    lineIndicator = window.document.getElementById("LinesIndicator");
     
-    quadTextures = windowHandle.document.getElementById("quadTextures");
+    quadTextures = window.document.getElementById("quadTextures");
+    if(quadTextures === null) throw "quadtextures are null";
+
     quadTextures.style.display ="none";
 
 
     TextureDictionary = createTextureDictionary(quadTextures);
                                       
     //setup controls
-    currentWindow = windowHandle;
-    currentWindow.onkeydown = keyHandler;
+    window.onkeydown = keyHandler;
 
     resetGame();
 
     currentGameState = GAME_STATE.notStarted;
     
-    currentWindow.requestAnimationFrame(renderGame);
+    window.requestAnimationFrame(renderGame);
 };
 
-main(window);
+main();

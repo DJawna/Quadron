@@ -5,19 +5,30 @@ export class pixi_renderer implements IRenderer{
 
     readonly app: pix.Application; 
 
-    constructor(document : Document, width: number, height: number) {
-        let lookedUpElement  = document.getElementById("playArea");
+    constructor(window : Window, width: number, height: number) {
+        let lookedUpElement  = window.document.getElementById("playArea");
         if(lookedUpElement == null) throw "playArea Element does not exist!";
 
         this.app = new pix.Application( {width,height});
         lookedUpElement.appendChild(this.app.view);
     }
 
-    clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
+    public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
+        const rect = new pix.Graphics();
+        rect.beginFill(0x000000);
+        rect.drawRect(topX,topY,Width,Height);
+        rect.endFill();
+        rect.x=0;
+        rect.y=0;
+        this.app.stage.addChild(rect);
+        this.app.render();
+    }
+
+    public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
         throw new Error("Method not implemented.");
     }
 
-    drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
+    public flushDrawBuffers(): void {
         throw new Error("Method not implemented.");
     }
 
