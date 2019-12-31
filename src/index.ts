@@ -31,8 +31,6 @@ let levelIndicator: any =null;
 let lineIndicator: any = null;
 
 
-let quadTextures = null;
-let TextureDictionary: any = null;
 let pauseLabel: any = null;
 let PauseButton: any = null;
 
@@ -348,7 +346,8 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
 
     let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
 }
-const createTextureDictionary = function(textureAtlas: any) {
+
+const TextureDictionary = (function(textureAtlas: string): (id: quadron.CELL_COLORS) => Texture {
     const _greyTexture = new Texture(textureAtlas,0,0,30,30);
     const _goldTexture = new Texture(textureAtlas,30,0,30,30);
     const _orangeTexture = new Texture(textureAtlas,60,0,30,30);
@@ -357,10 +356,8 @@ const createTextureDictionary = function(textureAtlas: any) {
     const _greenTexture = new Texture(textureAtlas,150,0,30,30);
     const _redTexture = new Texture(textureAtlas,180,0,30,30);
     const _blueVioletTexture = new Texture(textureAtlas,210,0,30,30);
-
-    return {
-        getTextureByID : function (id: quadron.CELL_COLORS) {
-            
+ 
+    return (id: quadron.CELL_COLORS) => {
             switch (id){
                 case quadron.CELL_COLORS.Border:
                  return _greyTexture;
@@ -389,10 +386,8 @@ const createTextureDictionary = function(textureAtlas: any) {
                 default:
                     return _greyTexture;
             }
-        }
-    }
-
-}
+        };
+})("assets/quadronTextures.png");
 
 
 const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSize: number,cellOffset: number,startingColumn: number,startingRow: number,opacity: number |undefined=undefined): void{
@@ -405,7 +400,7 @@ const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSi
                         currentopacity =opacity;
                     }
 
-                    ctxt.drawCellTexture(   TextureDictionary.getTextureByID(CellsToDraw[row][column].color),
+                    ctxt.drawCellTexture(   TextureDictionary(CellsToDraw[row][column].color),
                                             (cellSize +cellOffset) * (column +startingColumn),
                                             (cellSize +cellOffset)* (row +startingRow),cellSize,cellSize,currentopacity);
 
@@ -441,15 +436,7 @@ const main = function() : void {
     levelIndicator = window.document.getElementById("levelindicator");
     scoreIndicator = window.document.getElementById("scoreindicator");
     lineIndicator = window.document.getElementById("LinesIndicator");
-    
-    quadTextures = window.document.getElementById("quadTextures");
-    if(quadTextures === null) throw "quadtextures are null";
-
-    quadTextures.style.display ="none";
-
-
-    TextureDictionary = createTextureDictionary(quadTextures);
-                                      
+                                        
     //setup controls
     window.onkeydown = keyHandler;
 
