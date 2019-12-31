@@ -21,7 +21,6 @@ export class pixi_renderer implements IRenderer{
         rect.x=0;
         rect.y=0;
         this.app.stage.addChild(rect);
-        this.app.render();
     }
 
     public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
@@ -29,7 +28,7 @@ export class pixi_renderer implements IRenderer{
     }
 
     public flushDrawBuffers(): void {
-        throw new Error("Method not implemented.");
+        this.app.render();
     }
 
 }

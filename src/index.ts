@@ -178,6 +178,7 @@ const renderGame = function(timeStamp: number) : void{
         break;   
     }
     drawPlayField(currentPlayField,currentctxt);
+    currentctxt.flushDrawBuffers();
     
     window.requestAnimationFrame(renderGame);
 }
