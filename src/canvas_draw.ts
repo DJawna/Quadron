@@ -30,13 +30,6 @@ export class canvas_draw implements IRenderer {
     
         this.canvasCtxt.restore();
     }
-
-    public fillCanvas(x: number, y: number, width: number, height: number, color: string, opacity: number): void {
-        this.canvasCtxt.globalAlpha = opacity;
-        this.canvasCtxt.fillStyle = color;
-        this.canvasCtxt.fillRect(x, y, width, height);
-        this.canvasCtxt.globalAlpha = 1.0;
-    }
     
     public drawCellTexture(texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void{
         this.canvasCtxt.globalAlpha = opacity;
