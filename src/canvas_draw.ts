@@ -7,11 +7,16 @@ export class canvas_draw implements IRenderer {
     readonly canvasCtxt : CanvasRenderingContext2D;
 
     public constructor(document : Document, canvasID: string,width: number, height: number){
-        let lookedUpElement  = document.getElementById(canvasID);
-        if(lookedUpElement == null) throw `the following canvasID: ${canvasID} does not exist in the html document!`;
-        let canvasElement : HTMLCanvasElement = <HTMLCanvasElement> lookedUpElement;
+        let lookedUpElement  = document.getElementById("playArea");
+        if(lookedUpElement == null) throw "playArea Element does not exist!";
+
+        const canvasElement: HTMLCanvasElement = document.createElement("canvas"); // new HTMLCanvasElement();
+        canvasElement.id = canvasID;
+
         canvasElement.width = width;
         canvasElement.height = height;
+        lookedUpElement.appendChild(canvasElement);
+
         const retval = canvasElement.getContext( "2d");
         if(retval === null) throw "Could not create the 2d rendering context!";
         this.canvasCtxt = retval;
