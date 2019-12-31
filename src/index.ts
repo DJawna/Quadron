@@ -34,18 +34,6 @@ let levelIndicator: any =null;
 let lineIndicator: any = null;
 
 
-let firstPreviewCtxt: IRenderer = di.getRenderer(window.document, 
-    "firstPreview",
-    previewLenght * (previewCellsize +previewCellOffset),
-    previewLenght * (previewCellsize +previewCellOffset));
-let secondPreviewCtxt: IRenderer = di.getRenderer(window.document, 
-    "secondPreview",
-    previewLenght * (previewCellsize +previewCellOffset),
-    previewLenght * (previewCellsize +previewCellOffset));
-let thirdPreviewCtxt: IRenderer = di.getRenderer(window.document, 
-    "thirdPreview",
-    previewLenght * (previewCellsize +previewCellOffset),
-    previewLenght * (previewCellsize +previewCellOffset));
 let quadTextures = null;
 let TextureDictionary: any = null;
 let pauseLabel: any = null;
@@ -361,20 +349,6 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
     
 
     let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
-    firstPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
-    secondPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
-    thirdPreviewCtxt.clearCanvas(0,0,sizeOfPreview,sizeOfPreview);
-
-    if (currentGameState !== GAME_STATE.gameOver 
-        && 
-        currentGameState !== GAME_STATE.notStarted){
-            drawCells(firstPreviewCtxt,currentPlayField.nextQuads[0].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-            drawCells(secondPreviewCtxt,currentPlayField.nextQuads[1].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-            drawCells(thirdPreviewCtxt,currentPlayField.nextQuads[2].Cells,previewCellsize,previewCellOffset,0,0,1.0);
-            
-    }
-
-
 }
 const createTextureDictionary = function(textureAtlas: any) {
     const _greyTexture = new Texture(textureAtlas,0,0,30,30);
