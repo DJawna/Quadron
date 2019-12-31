@@ -4,9 +4,12 @@ import {IRenderer, Texture} from "./draw_contracts";
 export class pixi_renderer implements IRenderer{
 
     readonly app: pix.Application; 
+    readonly tLoader: pix.Loader;
+    readonly loadedTextures: string[]=[];
 
     constructor(window : Window, width: number, height: number) {
         let lookedUpElement  = window.document.getElementById("playArea");
+        this.tLoader = new pix.Loader();
         if(lookedUpElement == null) throw "playArea Element does not exist!";
 
         this.app = new pix.Application( {width,height});
@@ -24,7 +27,23 @@ export class pixi_renderer implements IRenderer{
     }
 
     public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
-        throw new Error("Method not implemented.");
+        const drawCommand = () => {
+            const sprite = new pix.Sprite(
+                this.tLoader.resources[texture.img].texture
+            );
+            sprite.x = x;
+            sprite.y = y;
+            sprite.width = width;
+            sprite.height = height;
+            sprite.alpha = opacity;
+            this.app.stage.addChild(sprite);
+        };
+        
+        if (!this.loadedTextures.includes(texture.img)){
+            this.tLoader.add(texture.img).load(drawCommand);
+        }else{
+            drawCommand();
+        }
     }
 
     public flushDrawBuffers(): void {
