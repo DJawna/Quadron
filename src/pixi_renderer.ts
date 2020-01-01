@@ -35,19 +35,26 @@ export class pixi_renderer implements IRenderer{
 
     readonly app: pix.Application; 
     readonly tLoader: pix.Loader;
-    // key: hascode of texture
-    readonly loadedTextures: collections.Dictionary<number,pix.Texture>;
+   
+    // key: hashcode of Texture object.
+    // this will cache the actual frames which were prepared for the sprites
+    // they are just a part of the entire texture.
+    readonly loadedFrames: collections.Dictionary<number,pix.Texture>;
 
 
-    constructor(window : Window, width: number, height: number) {
-
+    constructor(window : Window, width: number, height: number, textureFiles: collections.Set<string>) {
+        
         let lookedUpElement  = window.document.getElementById("playArea");
         this.tLoader = new pix.Loader();
         if(lookedUpElement == null) throw "playArea Element does not exist!";
 
         this.app = new pix.Application( {width,height});
         lookedUpElement.appendChild(this.app.view);
-        this.loadedTextures = new collections.Dictionary<number,pix.Texture>();
+        this.loadedFrames = new collections.Dictionary<number,pix.Texture>();
+        for(let textureFile in textureFiles){
+            this.tLoader.add(textureFile);
+        }
+        this.tLoader.load();
     }
 
     public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
@@ -60,46 +67,36 @@ export class pixi_renderer implements IRenderer{
         this.app.stage.addChild(rect);
     }
 
+    // Todo: now lookup the proper framed texture, the "raw" textures are all looked up now!
     public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
-        const cThis = this;
-        const drawCommand = () => {
+       if(!this.loadedFrames.containsKey(texture.hash)){
+            // get Entire texture first:
 
-            let tf = cThis.framedTextures.getValue(texture.hash);
-            if(tf ===undefined){
-                tf = cThis.tLoader.resources[texture.img].texture;
+       }
 
-                if(tf === undefined) 
-                {
-                    console.log("resource texture undefined");
-                    return;
-                }
-                console.log("resource texture defined");
+        let tf = this.loadedFrames.getValue(texture.hash);
+        if(tf ===undefined){
+            tf = this.tLoader.resources[texture.img].texture;
 
-
-                tf.frame = new pix.Rectangle(texture.sx,texture.sy,texture.swidth, texture.sheight);
-                cThis.framedTextures.setValue(texture.hash,tf);
+            if(tf === undefined) 
+            {
+                console.log("resource texture undefined");
+                return;
             }
-            const sprite = new pix.Sprite(tf);
-            //sprite.texture = tf;
-            sprite.x = x;
-            sprite.y = y;
-            sprite.width = width;
-            sprite.height = height;
-            sprite.alpha = opacity;
-            this.app.stage.addChild(sprite);
-        };
-        
-        if (!this.loadedTextures.getValue(texture.hash)){
-            this.loadedTextures.push(texture.img);
-            this.tLoader.add(texture.img).load(() => {
-                const foo = this.tLoader.resources[texture.img];
-                if(foo !==undefined){
-                    foo.
-                }
-            });
-        }else{
-            drawCommand();
+            console.log("resource texture defined");
+
+
+            tf.frame = new pix.Rectangle(texture.sx,texture.sy,texture.swidth, texture.sheight);
+            this.loadedFrames.setValue(texture.hash,tf);
         }
+        const sprite = new pix.Sprite(tf);
+        //sprite.texture = tf;
+        sprite.x = x;
+        sprite.y = y;
+        sprite.width = width;
+        sprite.height = height;
+        sprite.alpha = opacity;
+        this.app.stage.addChild(sprite);
     }
 
     public flushDrawBuffers(): void {
