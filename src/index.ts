@@ -11,13 +11,9 @@ const cellOffset: number = 0;
 
 
 
-const currentctxt: IRenderer = di.getRenderer(window, 
-    quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset),(function(): collections.Set<string> {
-        const textureFiles = new collections.Set<string>();
-        textureFiles.add("assets/quadronTextures.png");
-        return textureFiles;
-    })());
+
+
+
 
 const previewLenght: number =4;
 const previewCellsize: number = 24;
@@ -426,7 +422,7 @@ const main = function() : void {
     PauseButton.style.display = "none";
 
     toggleGameOverScren(window,false);
-    
+
     setupStartButtonCallback(window);
 
     PauseButton.onclick = function () {
@@ -439,7 +435,7 @@ const main = function() : void {
                 unPauseGame();
         }
     };
-    
+
     levelIndicator = window.document.getElementById("levelindicator");
     scoreIndicator = window.document.getElementById("scoreindicator");
     lineIndicator = window.document.getElementById("LinesIndicator");
@@ -450,8 +446,11 @@ const main = function() : void {
     resetGame();
 
     currentGameState = GAME_STATE.notStarted;
-    
+
     window.requestAnimationFrame(renderGame);
 };
 
-main();
+
+const currentctxt: IRenderer = di.getRenderer(window, 
+    quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
+    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset),["assets/quadronTextures.png"], main);

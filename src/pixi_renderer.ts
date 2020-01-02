@@ -42,7 +42,7 @@ export class pixi_renderer implements IRenderer{
     readonly loadedFrames: collections.Dictionary<number,pix.Texture>;
 
 
-    constructor(window : Window, width: number, height: number, textureFiles: collections.Set<string>) {
+    constructor(window : Window, width: number, height: number, textureFiles: string[], onReady: () => void) {
         
         let lookedUpElement  = window.document.getElementById("playArea");
         this.tLoader = new pix.Loader();
@@ -51,10 +51,15 @@ export class pixi_renderer implements IRenderer{
         this.app = new pix.Application( {width,height});
         lookedUpElement.appendChild(this.app.view);
         this.loadedFrames = new collections.Dictionary<number,pix.Texture>();
-        for(let textureFile in textureFiles){
+
+        
+        for(let textureFile of textureFiles){
             this.tLoader.add(textureFile);
+            if( this.tLoader.resources[textureFile] === undefined){
+                console.log("still undefined!");
+            }
         }
-        this.tLoader.load();
+        this.tLoader.load(onReady);
     }
 
     public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
