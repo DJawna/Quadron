@@ -69,27 +69,20 @@ export class pixi_renderer implements IRenderer{
 
     // Todo: now lookup the proper framed texture, the "raw" textures are all looked up now!
     public drawCellTexture(texture: Texture, x: number, y: number, width: number, height: number, opacity: number): void {
-       if(!this.loadedFrames.containsKey(texture.hash)){
+       const currentTexture = (function (_this: pixi_renderer): pix.Texture{
+           const lookup = _this.loadedFrames.getValue(texture.hash);
+            if(lookup !== undefined) return lookup;
+            
             // get Entire texture first:
+            const baseTexture = _this.tLoader.resources[texture.img].texture.baseTexture;
+            const rect = new pix.Rectangle(texture.sx,texture.sy,texture.swidth,texture.sheight);
+            const framedTexture = new pix.Texture(baseTexture,rect);
+            _this.loadedFrames.setValue(texture.hash,framedTexture);
+            return framedTexture;
+        })(this);
 
-       }
-
-        let tf = this.loadedFrames.getValue(texture.hash);
-        if(tf ===undefined){
-            tf = this.tLoader.resources[texture.img].texture;
-
-            if(tf === undefined) 
-            {
-                console.log("resource texture undefined");
-                return;
-            }
-            console.log("resource texture defined");
-
-
-            tf.frame = new pix.Rectangle(texture.sx,texture.sy,texture.swidth, texture.sheight);
-            this.loadedFrames.setValue(texture.hash,tf);
-        }
-        const sprite = new pix.Sprite(tf);
+       
+        const sprite = new pix.Sprite(currentTexture);
         //sprite.texture = tf;
         sprite.x = x;
         sprite.y = y;

@@ -1,6 +1,7 @@
 import  * as quadron from "./quadron";
 import {Texture, IRenderer} from "./draw_contracts";
 import * as di from "./di";
+import * as collections from "typescript-collections";
 
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
 
@@ -8,9 +9,15 @@ let currentPlayField: quadron.PlayField = new quadron.PlayField();
 const cellSize: number = 30;
 const cellOffset: number = 0;
 
+
+
 const currentctxt: IRenderer = di.getRenderer(window, 
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset));
+    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset),(function(): collections.Set<string> {
+        const textureFiles = new collections.Set<string>();
+        textureFiles.add("assets/quadronTextures.png");
+        return textureFiles;
+    })());
 
 const previewLenght: number =4;
 const previewCellsize: number = 24;
