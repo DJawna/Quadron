@@ -14,7 +14,7 @@ export class Texture{
         this.swidth = swidth;
         this.sheight = sheight;
         this.hash = this.img.split("").map(i => { 
-            const codePoint = i.codePointAt(0);
+            const codePoint = i.charCodeAt(0);
             if(codePoint === undefined){
                 return 0;
             } 
