@@ -1,19 +1,12 @@
 import  * as quadron from "./quadron";
 import {Texture, IRenderer} from "./draw_contracts";
 import * as di from "./di";
-import * as collections from "typescript-collections";
 
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
 
 
 const cellSize: number = 30;
 const cellOffset: number = 0;
-
-
-
-
-
-
 
 const previewLenght: number =4;
 const previewCellsize: number = 24;
@@ -28,16 +21,11 @@ let remainingRowsLifeTime: number =0;
 let currentLevel: number =0;
 let currentScore: number =0;
 let rowsEliminatedSoFar: number =0;
-
 let scoreIndicator: any =null;
 let levelIndicator: any =null;
 let lineIndicator: any = null;
-
-
 let pauseLabel: any = null;
 let PauseButton: any = null;
-
-
 
 enum GAME_STATE{
     started=1,
@@ -49,8 +37,6 @@ enum GAME_STATE{
 }
 
 let currentGameState: GAME_STATE = GAME_STATE.notStarted;
-
-let gameStarted: boolean = false;
 
 enum Key_mappings {
   fastLandButton = 32,
@@ -272,12 +258,10 @@ const resetGame = function(): void{
 
 
 const toggleGameOverScren = function(windowHandle : any, showGameOverScreen: boolean): void{
-
     if(showGameOverScreen){
         windowHandle.document.getElementById("GameOverScreen").style.display = "";
         windowHandle.document.getElementById("endScoreIndicator").innerText = currentScore;
         windowHandle.document.getElementById("endLinesIndicator").innerText = rowsEliminatedSoFar;
-
     }else {
         windowHandle.document.getElementById("GameOverScreen").style.display ="none";
     }
@@ -294,7 +278,6 @@ const setupStartButtonCallback= function(windowHandle: any) {
 
     startnewGameButton.onclick = function () {
         startNewGame();
-
     };
 
     startNewGameAfterGameOver.onclick = function (){
@@ -339,15 +322,10 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
     //drawing.drawCellTexture(currentctxt,TextureDictionary.getTextureByID("Green"),50,50,20,20,1.0);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY,0.4);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY);
-
-    
     
     levelIndicator.innerText = currentLevel;
     scoreIndicator.innerText = currentScore;
-    lineIndicator.innerText = rowsEliminatedSoFar;
-    
-
-    let sizeOfPreview =previewLenght * (previewCellsize +previewCellOffset);
+    lineIndicator.innerText = rowsEliminatedSoFar;    
 }
 
 const TextureDictionary = (function(textureAtlas: string): (id: quadron.CELL_COLORS) => Texture {
@@ -453,4 +431,4 @@ const main = function() : void {
 
 const currentctxt: IRenderer = di.getRenderer(window, 
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-    quadron.PlayField.DefaultRowNumber * (cellSize + cellOffset),["assets/quadronTextures.png"], main);
+    (quadron.PlayField.DefaultRowNumber+5) * (cellSize + cellOffset),["assets/quadronTextures.png"], main);
