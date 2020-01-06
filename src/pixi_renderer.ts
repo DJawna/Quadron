@@ -1,5 +1,5 @@
 import * as pix from "pixi.js";
-import {IRenderer, Texture} from "./draw_contracts";
+import {IRenderer, Texture,TextStyle} from "./draw_contracts";
 import * as collections from "typescript-collections";
 
 
@@ -101,6 +101,16 @@ export class pixi_renderer implements IRenderer{
         this.app.render();
         this.app.stage.removeChildren();
         
+    }
+
+    drawText(text: string, topX: number, topY: number, textStyle: TextStyle): void {
+        const pixTextStyle = new pix.TextStyle({
+            fill: textStyle.color
+        }); 
+        const basicText = new pix.Text(text,pixTextStyle);
+        basicText.x = topX;
+        basicText.y = topY;
+        this.app.stage.addChild(basicText);
     }
 
 }

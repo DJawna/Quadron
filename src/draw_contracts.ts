@@ -24,9 +24,18 @@ export class Texture{
 
 }
 
+export class TextStyle{
+    public readonly color: number;
+
+    public constructor(color: number){
+        this.color = color;
+    }
+}
+
 
 export interface IRenderer{
     clearCanvas (topX: number,topY: number,Width: number,Height: number): void;
     drawCellTexture(texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void;
     flushDrawBuffers(): void;
+    drawText (text: string, topX: number, topY: number, textStyle: TextStyle): void;
 }

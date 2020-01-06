@@ -3,18 +3,10 @@ import {Texture, IRenderer} from "./draw_contracts";
 import * as di from "./di";
 
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
-
-
 const cellSize: number = 30;
 const cellOffset: number = 0;
 const firstRowOffset: number= 5;
-
-const previewLenght: number =4;
-const previewCellsize: number = 24;
-const previewCellOffset: number =1;
 let lastRenderTimeStamp: number =0;
-
-
 const fallingIntervall: number = 500;
 let rowsToBeEliminated: number[] =[];
 const vanishingRowsLifeTime: number =4000;
@@ -302,7 +294,6 @@ const fallingFunction= function(): void {
 
 
 const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): void{
-
     ctxt.clearCanvas(
     0, 
     0,
@@ -318,11 +309,9 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
         }
     };
 
-    drawPreviewIfNotNull(playField.nextQuads, 0, -4,1);
-    drawPreviewIfNotNull(playField.nextQuads, 1, 0,1);
-    drawPreviewIfNotNull(playField.nextQuads, 2, 4,1);
-
-
+    drawPreviewIfNotNull(playField.nextQuads, 0, -4,2);
+    drawPreviewIfNotNull(playField.nextQuads, 1, 0,2);
+    drawPreviewIfNotNull(playField.nextQuads, 2, 4,2);
     
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY+firstRowOffset,0.4);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY+firstRowOffset);

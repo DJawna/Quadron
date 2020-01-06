@@ -1,5 +1,4 @@
 import {IRenderer} from "./draw_contracts";
-import {canvas_draw} from "./canvas_draw";
 import {pixi_renderer} from "./pixi_renderer";
 /**
  * This is the DI Registry
