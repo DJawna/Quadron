@@ -1,5 +1,5 @@
 import  * as quadron from "./quadron";
-import {Texture, IRenderer} from "./draw_contracts";
+import {Texture, IRenderer, TextStyle} from "./draw_contracts";
 import * as di from "./di";
 
 let currentPlayField: quadron.PlayField = new quadron.PlayField();
@@ -14,9 +14,6 @@ let remainingRowsLifeTime: number =0;
 let currentLevel: number =0;
 let currentScore: number =0;
 let rowsEliminatedSoFar: number =0;
-let scoreIndicator: any =null;
-let levelIndicator: any =null;
-let lineIndicator: any = null;
 let pauseLabel: any = null;
 let PauseButton: any = null;
 
@@ -315,10 +312,9 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
     
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY+firstRowOffset,0.4);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY+firstRowOffset);
-    
-    levelIndicator.innerText = currentLevel;
-    scoreIndicator.innerText = currentScore;
-    lineIndicator.innerText = rowsEliminatedSoFar;    
+    ctxt.drawText(`Score: ${currentScore}`,0,0,new TextStyle(0xffffff,20));
+    ctxt.drawText(`Niveau: ${currentLevel}`,132,0,new TextStyle(0xffffff,20));
+    ctxt.drawText(`Lines: ${rowsEliminatedSoFar}`,250,0,new TextStyle(0xffffff,20));  
 }
 
 const TextureDictionary = (function(textureAtlas: string): (id: quadron.CELL_COLORS) => Texture {
@@ -407,9 +403,6 @@ const main = function() : void {
         }
     };
 
-    levelIndicator = window.document.getElementById("levelindicator");
-    scoreIndicator = window.document.getElementById("scoreindicator");
-    lineIndicator = window.document.getElementById("LinesIndicator");
                                         
     //setup controls
     window.onkeydown = keyHandler;

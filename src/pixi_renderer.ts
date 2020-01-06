@@ -2,35 +2,6 @@ import * as pix from "pixi.js";
 import {IRenderer, Texture,TextStyle} from "./draw_contracts";
 import * as collections from "typescript-collections";
 
-
-/**
-need to try this for the texture with different frames:
-
- cells.forEach((row)=>{
-    row.forEach((col)=>{
-      // create sprite
-      let frame = selectTerrain(col);
-      console.log(frame);
-      // The baseTexture is the image, we want to share that between every sprite.
-      const baseTx = PIXI.loader.resources[terrainSource].texture.baseTexture;
-      // The texture combines a baseTexture and a frame to create a view into our image.
-      // Don't want to share this, so create a new one for each frame.
-      const texture = new PIXI.Texture(baseTx, frame);
-      let cell = new Sprite(texture);
-
-      cell.x = col.x;
-      cell.y = col.y;
-      addText(cell, col.row, col.col);
-
-      baseCont.addChild(cell);
-    });
-  });
-
-
- * 
- */
-
-
 export class pixi_renderer implements IRenderer{
 
     readonly app: pix.Application; 
@@ -105,12 +76,12 @@ export class pixi_renderer implements IRenderer{
 
     drawText(text: string, topX: number, topY: number, textStyle: TextStyle): void {
         const pixTextStyle = new pix.TextStyle({
-            fill: textStyle.color
+            fill: textStyle.color,
+            fontSize: textStyle.font_size
         }); 
         const basicText = new pix.Text(text,pixTextStyle);
         basicText.x = topX;
         basicText.y = topY;
         this.app.stage.addChild(basicText);
     }
-
 }

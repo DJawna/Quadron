@@ -26,9 +26,11 @@ export class Texture{
 
 export class TextStyle{
     public readonly color: number;
+    public readonly font_size: number;
 
-    public constructor(color: number){
+    public constructor(color: number, font_size: number){
         this.color = color;
+        this.font_size = font_size;
     }
 }
 
