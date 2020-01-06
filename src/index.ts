@@ -7,6 +7,7 @@ let currentPlayField: quadron.PlayField = new quadron.PlayField();
 
 const cellSize: number = 30;
 const cellOffset: number = 0;
+const firstRowOffset: number= 5;
 
 const previewLenght: number =4;
 const previewCellsize: number = 24;
@@ -317,11 +318,11 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
     playField.Cells.length * (cellSize +cellOffset));
 
     // first render the field without the quad:
-    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,0);
+    drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,firstRowOffset);
 
     //drawing.drawCellTexture(currentctxt,TextureDictionary.getTextureByID("Green"),50,50,20,20,1.0);
-    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY,0.4);
-    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY);
+    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY+firstRowOffset,0.4);
+    drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY+firstRowOffset);
     
     levelIndicator.innerText = currentLevel;
     scoreIndicator.innerText = currentScore;
