@@ -162,7 +162,7 @@ const renderGame = function(timeStamp: number) : void{
         break;
         
         case GAME_STATE.landing:
-            calculateLandingState(timeStamp);
+            currentGameState = GAME_STATE.elimination;
         break;   
     }
     drawPlayField(currentPlayField,currentctxt);
@@ -214,9 +214,7 @@ const calculateEliminationState= function(timeStamp: number): void {
     if(remainingRowsLifeTime > 0){
 
         let newOpacity =  remainingRowsLifeTime / vanishingRowsLifeTime;
-        window.console.log("newopacity: "+ newOpacity);
-
-        
+         
         for(let i =0;i < rowsToBeEliminated.length; i++) {
             let rowIndex = rowsToBeEliminated[i];
             
@@ -227,7 +225,6 @@ const calculateEliminationState= function(timeStamp: number): void {
                 currentPlayField.Cells[rowIndex][column].opacity = newOpacity; // = cell;
             }
         }
-
         remainingRowsLifeTime -= (timeStamp - lastRenderTimeStamp);
     }
     
@@ -242,9 +239,6 @@ const calculateEliminationState= function(timeStamp: number): void {
     }
 }
 
-const calculateLandingState = function(timeStamp: number) : void {
-    currentGameState = GAME_STATE.elimination;
-}
 
 const resetGame = function(): void{
     currentPlayField = new quadron.PlayField();  
@@ -253,8 +247,6 @@ const resetGame = function(): void{
     currentScore =0;
 
     rowsEliminatedSoFar =0;
-
-    
 }
 
 
@@ -319,8 +311,19 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
 
     // first render the field without the quad:
     drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,firstRowOffset);
+ 
+    const drawPreviewIfNotNull = (quads: quadron.Quad[], index: number, xCellOffset: number, yCellOffset: number): void =>{
+        if(quads.length >=index){
+            drawCells(ctxt,quads[index].Cells,cellSize,cellOffset,quads[index].TopX + xCellOffset,quads[index].TopY + yCellOffset);
+        }
+    };
 
-    //drawing.drawCellTexture(currentctxt,TextureDictionary.getTextureByID("Green"),50,50,20,20,1.0);
+    drawPreviewIfNotNull(playField.nextQuads, 0, -4,1);
+    drawPreviewIfNotNull(playField.nextQuads, 1, 0,1);
+    drawPreviewIfNotNull(playField.nextQuads, 2, 4,1);
+
+
+    
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.ShadowTopY+firstRowOffset,0.4);
     drawCells(ctxt,playField.CurrentQuad.Cells,cellSize,cellOffset,playField.CurrentQuad.TopX,playField.CurrentQuad.TopY+firstRowOffset);
     
