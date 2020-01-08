@@ -3,9 +3,9 @@ import {IRenderer, Texture,TextStyle} from "./draw_contracts";
 import * as collections from "typescript-collections";
 
 export class pixi_renderer implements IRenderer{
-
     readonly app: pix.Application; 
     readonly tLoader: pix.Loader;
+    graphics: pix.Graphics |null;
    
     // key: hashcode of Texture object.
     // this will cache the actual frames which were prepared for the sprites
@@ -31,6 +31,7 @@ export class pixi_renderer implements IRenderer{
             }
         }
         this.tLoader.load(onReady);
+        this.graphics =null;
     }
 
     public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
@@ -66,6 +67,10 @@ export class pixi_renderer implements IRenderer{
         sprite.height = height;
         sprite.alpha = opacity;
         this.app.stage.addChild(sprite);
+        if(this.graphics!==null){
+            this.app.stage.addChild(this.graphics);
+            this.graphics = null;
+        }
     }
 
     public flushDrawBuffers(): void {
@@ -84,4 +89,14 @@ export class pixi_renderer implements IRenderer{
         basicText.y = topY;
         this.app.stage.addChild(basicText);
     }
+
+    drawRectangle(x: number, y: number, width: number, height: number, opacity: number, color: number): void {
+        if(this.graphics === null)
+            this.graphics = new pix.Graphics();
+
+        this.graphics.beginFill(color);
+        this.graphics.drawRect(x,y,height,width);
+        this.graphics.endFill();
+    }
+
 }

@@ -38,6 +38,7 @@ export class TextStyle{
 export interface IRenderer{
     clearCanvas (topX: number,topY: number,Width: number,Height: number): void;
     drawCellTexture(texture: Texture,x: number,y: number,width: number,height: number,opacity:number): void;
+    drawRectangle(x: number, y: number, width: number, height: number,opacity: number, color: number): void;
     flushDrawBuffers(): void;
     drawText (text: string, topX: number, topY: number, textStyle: TextStyle): void;
 }
