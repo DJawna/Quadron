@@ -11,10 +11,13 @@ export class pixi_renderer implements IRenderer{
     // this will cache the actual frames which were prepared for the sprites
     // they are just a part of the entire texture.
     readonly loadedFrames: collections.Dictionary<number,pix.Texture>;
+    readonly usedSprites: Array<pix.Sprite>;
+    readonly unusedSprites: Array<pix.Sprite>;
 
 
     constructor(window : Window, width: number, height: number, textureFiles: string[], onReady: () => void) {
-        
+        this.usedSprites = new Array<pix.Sprite>();
+        this.unusedSprites = new Array<pix.Sprite>();
         let lookedUpElement  = window.document.getElementById("playArea");
         this.tLoader = new pix.Loader();
         if(lookedUpElement == null) throw "playArea Element does not exist!";
@@ -35,13 +38,12 @@ export class pixi_renderer implements IRenderer{
     }
 
     public clearCanvas(topX: number, topY: number, Width: number, Height: number): void {
-        const rect = new pix.Graphics();
-        rect.beginFill(0x000000);
-        rect.drawRect(topX,topY,Width,Height);
-        rect.endFill();
-        rect.x=0;
-        rect.y=0;
-        this.app.stage.addChild(rect);
+        const graph = this.provideGraphicsOnce();
+        graph.beginFill(0x000000);
+        graph.drawRect(topX,topY,Width,Height);
+        graph.endFill();
+        graph.x=0;
+        graph.y=0;
     }
 
     // Todo: now lookup the proper framed texture, the "raw" textures are all looked up now!
@@ -58,23 +60,38 @@ export class pixi_renderer implements IRenderer{
             return framedTexture;
         })(this);
 
-       
-        const sprite = new pix.Sprite(currentTexture);
+        
+        const provideSpriteOnce = function(pr: pixi_renderer, currentTexture: pix.Texture): pix.Sprite{
+            if(pr.unusedSprites.length===0){
+                const newSprite = new pix.Sprite(currentTexture);
+                pr.usedSprites.push(newSprite);
+                pr.app.stage.addChild(newSprite);
+                return newSprite;
+            }
+            const existingSprite = pr.unusedSprites.pop();
+            if(existingSprite === undefined)
+                throw "existing sprite is undefined";
+
+            existingSprite.texture = currentTexture;
+            pr.usedSprites.push(existingSprite);
+            return existingSprite;
+        };
+
+        const sprite =provideSpriteOnce(this,currentTexture);
         //sprite.texture = tf;
         sprite.x = x;
         sprite.y = y;
         sprite.width = width;
         sprite.height = height;
         sprite.alpha = opacity;
-        if(this.graphics!==null){
-            this.app.stage.addChild(this.graphics);
-            this.graphics = null;
-        }
-        this.app.stage.addChild(sprite);
 
     }
 
     public flushDrawBuffers(): void {
+        if(this.graphics!==null){
+            this.app.stage.addChild(this.graphics);
+            this.graphics = null;
+        }
         this.app.render();
         this.app.stage.removeChildren();
         
@@ -91,13 +108,19 @@ export class pixi_renderer implements IRenderer{
         this.app.stage.addChild(basicText);
     }
 
-    drawRectangle(x: number, y: number, width: number, height: number, opacity: number, color: number): void {
+    provideGraphicsOnce(): pix.Graphics {
         if(this.graphics === null)
             this.graphics = new pix.Graphics();
 
-        this.graphics.beginFill(color);
-        this.graphics.drawRect(x,y,width,height);
-        this.graphics.endFill();
+        return this.graphics;
+    }
+
+    drawRectangle(x: number, y: number, width: number, height: number, opacity: number, color: number): void {
+        const graph = this.provideGraphicsOnce();
+
+        graph.beginFill(color);
+        graph.drawRect(x,y,width,height);
+        graph.endFill();
     }
 
 }
