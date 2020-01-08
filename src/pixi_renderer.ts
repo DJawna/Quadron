@@ -66,11 +66,12 @@ export class pixi_renderer implements IRenderer{
         sprite.width = width;
         sprite.height = height;
         sprite.alpha = opacity;
-        this.app.stage.addChild(sprite);
         if(this.graphics!==null){
             this.app.stage.addChild(this.graphics);
             this.graphics = null;
         }
+        this.app.stage.addChild(sprite);
+
     }
 
     public flushDrawBuffers(): void {
@@ -95,7 +96,7 @@ export class pixi_renderer implements IRenderer{
             this.graphics = new pix.Graphics();
 
         this.graphics.beginFill(color);
-        this.graphics.drawRect(x,y,height,width);
+        this.graphics.drawRect(x,y,width,height);
         this.graphics.endFill();
     }
 

@@ -14,7 +14,6 @@ let remainingRowsLifeTime: number =0;
 let currentLevel: number =0;
 let currentScore: number =0;
 let rowsEliminatedSoFar: number =0;
-let pauseLabel: any = null;
 let PauseButton: any = null;
 
 enum GAME_STATE{
@@ -88,13 +87,11 @@ const inGameKeyInputHandler = function(keyCode: Key_mappings, playField: quadron
 
 const pauseGame= function(): void {
     currentGameState = GAME_STATE.paused;
-    pauseLabel.style.display ="";
 
 }
 
 const unPauseGame = function(): void {
     currentGameState = GAME_STATE.started;
-    pauseLabel.style.display ="none";
 }
 
 const pauseScreenKeyInputHandler = function(keyCode: Key_mappings): void{
@@ -152,7 +149,8 @@ const renderGame = function(timeStamp: number) : void{
         
         case GAME_STATE.landing:
             currentGameState = GAME_STATE.elimination;
-        break;   
+        break; 
+
     }
     drawPlayField(currentPlayField,currentctxt);
     currentctxt.flushDrawBuffers();
@@ -182,7 +180,6 @@ const calculateGameState = function(timeStamp: number): void{
     if( quadron.checkQuadOverlaps(currentPlayField)){
         currentGameState = GAME_STATE.gameOver;
         PauseButton.style.display ="none";
-        pauseLabel.style.display ="none";
         toggleGameScren(window,false);
         toggleGameOverScren(window,true);
     }
@@ -276,10 +273,6 @@ const startNewGame = function():void {
     resetGame();
     currentGameState = GAME_STATE.started;
     PauseButton.style.display ="";
-    pauseLabel.style.display ="none";
-
-
-
     window.requestAnimationFrame(renderGame);
 }
 
@@ -315,6 +308,15 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
     ctxt.drawText(`Score: ${currentScore}`,0,0,new TextStyle(0xffffff,20));
     ctxt.drawText(`Niveau: ${currentLevel}`,132,0,new TextStyle(0xffffff,20));
     ctxt.drawText(`Lines: ${rowsEliminatedSoFar}`,250,0,new TextStyle(0xffffff,20));  
+    if(currentGameState === GAME_STATE.paused){
+        let x,y,width,height: number;
+        x =145;
+        y = 420;
+        width = 100;
+        height = 20;
+        ctxt.drawRectangle(x,y,width,height,1.0,0xffffff);
+        ctxt.drawText("Pause",x,y,new TextStyle(0x000000,20));
+    }
 }
 
 const TextureDictionary = (function(textureAtlas: string): (id: quadron.CELL_COLORS) => Texture {
@@ -381,10 +383,6 @@ const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSi
 
 
 const main = function() : void {
-
-    pauseLabel = window.document.getElementById("pauseLabel");
-    pauseLabel.style.display ="none";
-
     PauseButton = window.document.getElementById("PauseButton");
     PauseButton.style.display = "none";
 
