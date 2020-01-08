@@ -180,8 +180,6 @@ const calculateGameState = function(timeStamp: number): void{
     if( quadron.checkQuadOverlaps(currentPlayField)){
         currentGameState = GAME_STATE.gameOver;
         PauseButton.style.display ="none";
-        toggleGameScren(window,false);
-        toggleGameOverScren(window,true);
     }
 }
 
@@ -236,35 +234,14 @@ const resetGame = function(): void{
 }
 
 
-const toggleGameOverScren = function(windowHandle : any, showGameOverScreen: boolean): void{
-    if(showGameOverScreen){
-        windowHandle.document.getElementById("GameOverScreen").style.display = "";
-        windowHandle.document.getElementById("endScoreIndicator").innerText = currentScore;
-        windowHandle.document.getElementById("endLinesIndicator").innerText = rowsEliminatedSoFar;
-    }else {
-        windowHandle.document.getElementById("GameOverScreen").style.display ="none";
-    }
-}
 
-const toggleGameScren= function(windowHandle: any, showGameOverScreen: boolean): void{
-    windowHandle.document.getElementById("GameContainer").style.display = (showGameOverScreen) ? "" : "none";
-}
 
 const setupStartButtonCallback= function(windowHandle: any) {
-
-    let startNewGameAfterGameOver = windowHandle.document.getElementById("restartGameButton");
     let startnewGameButton = windowHandle.document.getElementById("startNewGameButton");
 
     startnewGameButton.onclick = function () {
         startNewGame();
     };
-
-    startNewGameAfterGameOver.onclick = function (){
-        toggleGameOverScren(window,false);
-        toggleGameScren(window,true);
-        startNewGame();
-
-    }
 }
 
 
@@ -385,8 +362,6 @@ const drawCells = function(ctxt : IRenderer,CellsToDraw: quadron.Cell[][],cellSi
 const main = function() : void {
     PauseButton = window.document.getElementById("PauseButton");
     PauseButton.style.display = "none";
-
-    toggleGameOverScren(window,false);
 
     setupStartButtonCallback(window);
 
