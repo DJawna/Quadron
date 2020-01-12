@@ -152,10 +152,8 @@ const renderGame = function(timeStamp: number) : void{
         break; 
 
     }
-    drawPlayField(currentPlayField,currentctxt);
     currentctxt.flushDrawBuffers();
-    
-    window.requestAnimationFrame(renderGame);
+    drawPlayField(currentPlayField,currentctxt);
 }
 
 const calculateCurrentFallingIntervall = function(level : number): number {
@@ -250,7 +248,6 @@ const startNewGame = function():void {
     resetGame();
     currentGameState = GAME_STATE.started;
     PauseButton.style.display ="";
-    window.requestAnimationFrame(renderGame);
 }
 
 const fallingFunction= function(): void {
@@ -261,11 +258,12 @@ const fallingFunction= function(): void {
 
 
 const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): void{
+    /*
     ctxt.clearCanvas(
     0, 
     0,
     playField.Cells[0].length * (cellSize +cellOffset), 
-    playField.Cells.length * (cellSize +cellOffset));
+    playField.Cells.length * (cellSize +cellOffset));*/
 
     // first render the field without the quad:
     drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,firstRowOffset);
@@ -383,11 +381,10 @@ const main = function() : void {
     resetGame();
 
     currentGameState = GAME_STATE.notStarted;
-
-    window.requestAnimationFrame(renderGame);
+    currentctxt.setGameUpdateCB(renderGame);
 };
 
 
 const currentctxt: IRenderer = di.getRenderer(window, 
     quadron.PlayField.DefaultColumnNumber * (cellSize + cellOffset),
-    (quadron.PlayField.DefaultRowNumber+5) * (cellSize + cellOffset),["assets/quadronTextures.png"], main);
+    (quadron.PlayField.DefaultRowNumber+5) * (cellSize + cellOffset),["assets/quadronTextures.png"], main,quadron.PlayField.DefaultColumnNumber * (quadron.PlayField.DefaultRowNumber+5));

@@ -41,4 +41,5 @@ export interface IRenderer{
     drawRectangle(x: number, y: number, width: number, height: number,opacity: number, color: number): void;
     flushDrawBuffers(): void;
     drawText (text: string, topX: number, topY: number, textStyle: TextStyle): void;
+    setGameUpdateCB(gameUpdateCB: (delta:number) => void): void;
 }
