@@ -88,6 +88,9 @@ export class pixi_renderer implements IRenderer{
     }
 
     public flushDrawBuffers(): void {
+        // add the textures
+
+        // add the graphics
         if(this.graphics!==null){
             this.app.stage.addChild(this.graphics);
             this.graphics = null;
