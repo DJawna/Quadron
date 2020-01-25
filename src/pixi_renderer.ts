@@ -59,6 +59,7 @@ export class pixi_renderer implements IRenderer{
         this.graphics.endFill();
         this.graphics.x=0;
         this.graphics.y=0;
+        this.usedSprites.forEach(i => i.visible =false);
     }
 
     // Todo: now lookup the proper framed texture, the "raw" textures are all looked up now!
@@ -84,6 +85,7 @@ export class pixi_renderer implements IRenderer{
         sprite.width = width;
         sprite.height = height;
         sprite.alpha = opacity;
+        sprite.visible = true;
     }
 
     public flushDrawBuffers(): void {
@@ -120,7 +122,7 @@ export class pixi_renderer implements IRenderer{
 
     getDebugInfo(): string {
         
-        return `total Sprites: ${this.usedSprites.length}\nLoaded Frames: ${this.loadedFrames.keys.length}`;
+        return `total Sprites: ${this.usedSprites.length}\nLoaded Frames: ${this.loadedFrames.values.length}\nVisible Sprites: ${this.usedSprites.filter(i => i.visible===true).length}`;
     }
 
 }
