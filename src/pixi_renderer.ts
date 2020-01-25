@@ -3,6 +3,7 @@ import {IRenderer, Texture,TextStyle} from "./draw_contracts";
 import * as collections from "typescript-collections";
 
 export class pixi_renderer implements IRenderer{
+
     readonly app: pix.Application; 
     readonly tLoader: pix.Loader;
     readonly graphics: pix.Graphics;
@@ -74,23 +75,6 @@ export class pixi_renderer implements IRenderer{
             return framedTexture;
         })(this);
 
-        /*
-        const provideSpriteOnce = function(pr: pixi_renderer, currentTexture: pix.Texture): pix.Sprite{
-            if(pr.unusedSprites.length===0){
-                const newSprite = new pix.Sprite(currentTexture);
-                pr.usedSprites.push(newSprite);
-                pr.textureContainer.addChild(newSprite);
-                return newSprite;
-            }
-            const existingSprite = pr.unusedSprites.pop();
-            if(existingSprite === undefined)
-                throw "existing sprite is undefined";
-
-            existingSprite.texture = currentTexture;
-            pr.usedSprites.push(existingSprite);
-            return existingSprite;
-        };*/
-
         const sprite =this.usedSprites[this.usedSpriteIndex];
         this.usedSpriteIndex++;
         sprite.texture = currentTexture;
@@ -132,6 +116,11 @@ export class pixi_renderer implements IRenderer{
 
     setGameUpdateCB(gameUpdateCB: (delta:number) => void): void{
         this.app.ticker.add(gameUpdateCB);
+    }
+
+    getDebugInfo(): string {
+        
+        return `total Sprites: ${this.usedSprites.length}\nLoaded Frames: ${this.loadedFrames.keys.length}`;
     }
 
 }

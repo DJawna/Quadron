@@ -15,6 +15,7 @@ let currentLevel: number =0;
 let currentScore: number =0;
 let rowsEliminatedSoFar: number =0;
 let PauseButton: any = null;
+let debugMode: boolean = true;
 
 enum GAME_STATE{
     started=1,
@@ -153,7 +154,7 @@ const renderGame = function(timeStamp: number) : void{
 
     }
     currentctxt.flushDrawBuffers();
-    drawPlayField(currentPlayField,currentctxt);
+    drawPlayField(currentPlayField,currentctxt, timeStamp);
 }
 
 const calculateCurrentFallingIntervall = function(level : number): number {
@@ -257,15 +258,7 @@ const fallingFunction= function(): void {
 }
 
 
-const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): void{
-    /*
-    ctxt.clearCanvas(
-    0, 
-    0,
-    playField.Cells[0].length * (cellSize +cellOffset), 
-    playField.Cells.length * (cellSize +cellOffset));*/
-
-    // first render the field without the quad:
+const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer, deltaTime : number): void{
     drawCells(ctxt,playField.Cells,cellSize,cellOffset,0,firstRowOffset);
  
     const drawPreviewIfNotNull = (quads: quadron.Quad[], index: number, xCellOffset: number, yCellOffset: number): void =>{
@@ -291,6 +284,18 @@ const drawPlayField= function(playField: quadron.PlayField, ctxt: IRenderer): vo
         height = 20;
         ctxt.drawRectangle(x,y,width,height,1.0,0xffffff);
         ctxt.drawText("Pause",x,y,new TextStyle(0x000000,20));
+    }
+
+    if(debugMode){
+        const x : number =170;
+        const y : number =600;
+        let fps : number = -1;
+        if(deltaTime > 0){
+            fps = 1000/deltaTime;
+        }
+        
+        ctxt.drawText(`Debuginfo:\ndeltaMS: ${deltaTime}\nfps: ${fps}\n${ctxt.getDebugInfo()}`,x,y,new TextStyle(0x00ff00,20));
+        
     }
 }
 
