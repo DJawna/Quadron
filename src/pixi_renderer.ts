@@ -121,8 +121,7 @@ export class pixi_renderer implements IRenderer{
     }
 
     getDebugInfo(): string {
-        
-        return `total Sprites: ${this.usedSprites.length}\nLoaded Frames: ${this.loadedFrames.values.length}\nVisible Sprites: ${this.usedSprites.filter(i => i.visible===true).length}`;
+        return `total Sprites: ${this.usedSprites.length}\nLoaded Frames: ${this.loadedFrames.values().length}\nVisible Sprites: ${this.usedSprites.filter(i => i.visible===true).length}`;
     }
 
 }
