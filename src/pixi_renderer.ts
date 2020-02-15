@@ -21,12 +21,14 @@ export class pixi_renderer implements IRenderer{
     constructor(window : Window, width: number, height: number, textureFiles: string[], onReady: () => void, numberOfFields: number) {
         this.usedSprites = new Array<pix.Sprite>(numberOfFields);
         this.usedSpriteIndex = 0;
+        this.textureContainer = new pix.Container();
         for(let spriteIndex =0; spriteIndex<numberOfFields;spriteIndex++){
             const currentSprite = new pix.Sprite();
             currentSprite.x = 0;
             currentSprite.y = 0;
             currentSprite.visible = false;
             this.usedSprites[spriteIndex]= currentSprite;
+            this.textureContainer.addChild(currentSprite);
         }
         this.textContainer = new pix.Container();
         let lookedUpElement  = window.document.getElementById("playArea");
@@ -44,7 +46,7 @@ export class pixi_renderer implements IRenderer{
                 console.log("still undefined!");
             }
         }
-        this.textureContainer = new pix.Container();
+        
         this.tLoader.load(onReady);
         this.graphics =new pix.Graphics();
 
