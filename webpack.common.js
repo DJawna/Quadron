@@ -5,11 +5,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   node: { fs: 'empty' },
   plugins: [
-    new CopyPlugin([
+    new CopyPlugin(
+      {"patterns": [
       "index.css",
       "index.html",
-      "assets/*"
-    ]),
+      "assets/*"]
+    }),
   ],
   entry: {
     "main": './src/index.ts'
