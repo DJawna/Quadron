@@ -25,11 +25,11 @@
   "homepage": "https://github.com/DJawna/Quadron#readme",
   "devDependencies": {
     "copy-webpack-plugin": "^6.0.4",
-    "ts-loader": "^6.2.1",
+    "ts-loader": "^9.4.2",
     "typescript": "^3.7.4",
     "typescript-cli": "^0.1.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
   }
